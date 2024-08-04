@@ -6,6 +6,7 @@
         "checkJs": true,
         "allowJs": true,
         "noEmit": true,
+        "allowSyntheticDefaultImports": true
     },
     "include": [
         "**/*.js"

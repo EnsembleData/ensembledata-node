@@ -1,16 +1,12 @@
-
 const BASE_URL = "https://ensembledata.com/apis";
 
-
 class EDResponse {
-
     /**
      * @param {number} statusCode
      * @param {any} data
      * @param {number} unitsCharged
      */
     constructor(statusCode, data, unitsCharged) {
-
         /** @type {number} */
         this.statusCode = statusCode;
 
@@ -23,7 +19,6 @@ class EDResponse {
 }
 
 class EDError extends Error {
-
     /**
      * @param {number} statusCode
      * @param {string} detail
@@ -41,23 +36,19 @@ class EDError extends Error {
         /** @type {number} */
         this.unitsCharged = unitsCharged;
     }
-
 }
 
 class Requester {
-
-    /** 
+    /**
      * @type {string}
      * @readonly
      */
     #token;
 
-
     /** @param {{ token: string }} options */
     constructor({ token }) {
-        this.#token = token
+        this.#token = token;
     }
-
 
     /**
      * @param {string} path
@@ -67,10 +58,10 @@ class Requester {
     async get(path, params) {
         params = { ...params, token: this.#token };
         const queryParams = new URLSearchParams(params).toString();
-        return fetch(`${BASE_URL}/${path}?${queryParams}`)
-            .then(this.handle_response);
+        return fetch(`${BASE_URL}/${path}?${queryParams}`).then(
+            this.handle_response,
+        );
     }
-
 
     /**
      * @param {Response} response
@@ -85,15 +76,10 @@ class Requester {
         }
         throw new EDError(response.status, json.detail, unitsCharged);
     }
-
-
-
 }
 
-
 class Customer {
-
-    /** 
+    /**
      * @type {Requester}
      * @readonly
      */
@@ -101,26 +87,24 @@ class Customer {
 
     /** @param {{ requester: Requester }} options */
     constructor({ requester }) {
-        this.#requester = requester
+        this.#requester = requester;
     }
 
     /** @param {string} date */
     getUsage(date) {
-        return this.#requester.get("/customer/get-used-units", { date })
+        return this.#requester.get("/customer/get-used-units", { date });
     }
-
 }
 
 class EDClient {
-
-    /** 
+    /**
      * @type {Requester}
      * @readonly
      */
     #requester;
 
     constructor({ token }) {
-        const requester = new Requester({ token });;
+        const requester = new Requester({ token });
         this.#requester = requester;
         this.customer = new Customer({ requester });
     }
@@ -133,6 +117,4 @@ class EDClient {
     async request(path, params) {
         return this.#requester.get(path, params);
     }
-
 }
-
