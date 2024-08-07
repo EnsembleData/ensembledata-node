@@ -569,6 +569,34 @@ class RedditClient {
         this.#requester = requester;
     }
 
+
+    /**
+     * @typedef {{
+     *  name: string,
+     *  sort: "hot" | "new" | "top" | "rising",
+     *  period: "hour" | "day" | "week" | "month" | "year" | "all",
+     *  cursor: string,
+     * }} RedditSubredditPostsParams
+     */
+
+    /**
+     * Fetch posts from a subreddit.
+     * @param {RedditSubredditPostsParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    subredditPosts({ name, sort, period, cursor }) {
+        return this.#requester.get("/reddit/subreddit/posts", { name, sort, period, cursor });
+    }
+
+    /**
+     * Fetch comments from a post.
+     * @param {{ postId: string, cursor: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    postComments( { postId, cursor }) {
+        return this.#requester.get("/reddit/post/comments", { id: postId, cursor });
+    }
+
 }
 
 
