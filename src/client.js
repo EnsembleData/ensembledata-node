@@ -523,6 +523,54 @@ class InstagramClient {
 
 }
 
+class TwitchClient {
+
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {{ requester: Requester }} options */
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+    /**
+     * Fetch results (videos/channels/games) from a given keyword.
+     * @param {{ keyword: string; depth: number, type: "videos" | "channels" | "games" }} params
+     * @returns {Promise<EDResponse>}
+     */
+    searchKeyword({ keyword, depth, type }) {
+        return this.#requester.get("/twitch/search", { keyword, depth, type });
+    }
+
+    /**
+     * Fetch the number of followers for the given channel.
+     * @param {{ username: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userFollowers({ username }) {
+        return this.#requester.get("/twitch/user/followers", { username });
+    }
+
+}
+
+class RedditClient {
+
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {{ requester: Requester }} options */
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+}
+
 
 class CustomerClient {
     /**
@@ -565,6 +613,10 @@ export class EDClient {
 
         /** @readonly */
         this.instagram = new InstagramClient({ requester });
+        
+        /** @readonly */
+        this.twitch = new TwitchClient({ requester });
+        
 
     }
 
