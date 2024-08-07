@@ -1,8 +1,6 @@
 import { Requester, EDResponse } from "./requester.js";
 import { filterUndefinedValues, toSnakeCaseObject } from "./utils.js";
 
-
-
 class TikTokClient {
     /**
      * @type {Requester}
@@ -103,14 +101,20 @@ class TikTokClient {
      */
 
     /**
-     * Fetch all possible posts for a given keyword from the Tiktok mobile app search
-     * video bar according to filter based on time. This API automatically manages the
-     * pagination for our API keyword/search.
+     * Fetch all possible posts for a given keyword from the Tiktok mobile app
+     * search video bar according to filter based on time. This API
+     * automatically manages the pagination for our API keyword/search.
      *
      * @param {TikTokFullKeywordSearchParams} params
      * @returns {Promise<EDResponse>}
      */
-    fullKeywordSearch({ keyword, period, sorting = undefined, country = undefined, matchExactly = undefined }) {
+    fullKeywordSearch({
+        keyword,
+        period,
+        sorting = undefined,
+        country = undefined,
+        matchExactly = undefined,
+    }) {
         const params = filterUndefinedValues({
             name: keyword,
             period,
@@ -121,7 +125,75 @@ class TikTokClient {
         return this.#requester.get("/tt/keyword/full-search", params);
     }
 
+    /**
+     * @typedef {{
+     *     username: string;
+     *     depth: number;
+     *     startCursor?: number;
+     *     oldestCreatetime?: number;
+     *     alternativeMethod?: boolean;
+     * }} TikTokUserPostsFromUsernameParams
+     */
 
+    /**
+     * Fetch user posts from the username.
+     *
+     * @param {TikTokUserPostsFromUsernameParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    userPostsFromUsername({
+        username,
+        depth,
+        startCursor = undefined,
+        oldestCreatetime = undefined,
+        alternativeMethod = undefined,
+    }) {
+        const params = filterUndefinedValues({
+            username,
+            depth,
+            ...toSnakeCaseObject({
+                startCursor,
+                oldestCreatetime,
+                alternativeMethod,
+            }),
+        });
+        return this.#requester.get("/tt/user/posts", params);
+    }
+
+    /**
+     * @typedef {{
+     *     secUid: string;
+     *     depth: number;
+     *     startCursor?: number;
+     *     oldestCreatetime?: number;
+     *     alternativeMethod?: boolean;
+     * }} TikTokUserPostsFromSecUidParams
+     */
+
+    /**
+     * Fetch user posts from the secondary user ID.
+     *
+     * @param {TikTokUserPostsFromSecUidParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    userPostsFromSecUid({
+        secUid,
+        depth,
+        startCursor = undefined,
+        oldestCreatetime = undefined,
+        alternativeMethod = undefined,
+    }) {
+        const params = filterUndefinedValues({
+            secUid,
+            depth,
+            ...toSnakeCaseObject({
+                startCursor,
+                oldestCreatetime,
+                alternativeMethod,
+            }),
+        });
+        return this.#requester.get("/tt/user/posts-from-secuid", params);
+    }
 
     /**
      * Fetch user information and statistics from the username.
@@ -146,6 +218,115 @@ class TikTokClient {
         });
         return this.#requester.get("/tt/user/info-from-secuid", params);
     }
+
+    /**
+     * Fetch list of users whose username might be related to the given keyword.
+     *
+     * @param {{ keyword: string; cursor: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userSearch({ keyword, cursor }) {
+        return this.#requester.get("/tt/user/search", { keyword, cursor });
+    }
+
+    /**
+     * Fetch post information and statistics from URL.
+     *
+     * @param {string} url
+     * @returns {Promise<EDResponse>}
+     */
+    postInfo(url) {
+        return this.#requester.get("/tt/post/info", { url });
+    }
+
+    /**
+     * Fetch information for multiple post IDs passed as input parameter. The
+     * endpoint can return maximum up to 100 posts together.
+     *
+     * @param {string[]} postIds
+     * @returns {Promise<EDResponse>}
+     */
+    multiPostInfo(postIds) {
+        return this.#requester.get("/tt/post/multi-info", {
+            ids: postIds.join(";"),
+        });
+    }
+
+    /**
+     * Fetch comments for a given post. Each request returns a chunk of 30
+     * comments. The API pagination has to be managed using the cursor starting
+     * from 0.
+     *
+     * @param {{ postId: string; cursor: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    postComments({ postId, cursor }) {
+        return this.#requester.get("/tt/post/comments", {
+            aweme_id: postId,
+            cursor,
+        });
+    }
+
+    /**
+     * Fetch the replies to a comments for a given post. Each request returns a
+     * chunk of 30 replies to a comment. The API pagination has to be managed
+     * manually using the cursor starting from 0.
+     *
+     * @param {{ postId: string; commentId: string; cursor: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    postCommentReplies({ postId, commentId, cursor }) {
+        return this.#requester.get("/tt/post/comment-replies", {
+            aweme_id: postId,
+            comment_id: commentId,
+            cursor,
+        });
+    }
+
+    /**
+     * @typedef {{
+     *    keyword: string;
+     *    cursor: number;
+     *    sorting: "0" | "1" | "2" | "3" | "4";
+     *    filterBy: "0" | "1" | "2";
+     * }} TikTokMusicSearchParams
+     */
+
+    /**
+     * Fetch information about music based on a string.
+     * @param {TikTokMusicSearchParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    musicSearch({ keyword, cursor, sorting, filterBy }) {
+        return this.#requester.get("/tt/music/info", {
+            name: keyword,
+            cursor,
+            sorting,
+            filter_by: filterBy,
+        });
+    }
+
+    /**
+     * Fetch the videos which have a particular piece of music in the background.
+     * The `music_id` can be obtained from other endpoints.
+     *
+     * @param {{ musicId: string; cursor: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    musicPosts({ musicId, cursor }) {
+        return this.#requester.get("/tt/music/posts", { music_id: musicId, cursor });
+    }
+
+    /**
+     * Fetch detailed information for a music ID.
+     * @param {string} musicId
+     * @returns {Promise<EDResponse>}
+     */
+    musicDetails(musicId) {
+        return this.#requester.get("/tt/music/details", { id: musicId });
+    }
+
+
 }
 
 class CustomerClient {
