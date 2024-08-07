@@ -358,6 +358,172 @@ class TikTokClient {
 
 }
 
+class InstagramClient {
+
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {{ requester: Requester }} options */
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+    /**
+     * @typedef {{
+     *    userId: number,
+     *    depth: number,
+     *    oldestTimestamp?: number,
+     *    chunkSize?: number,
+     *    startCursor?: string,
+     *    alternativeMethod?: boolean,
+     * }} InstagramUserPostsParams
+     */
+
+    /**
+     * Fetch user posts from the user id.
+     * @param {InstagramUserPostsParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    userPosts({ userId, depth, oldestTimestamp = undefined, chunkSize = undefined, startCursor = undefined,  alternativeMethod = undefined }) { 
+        const params = filterUndefinedValues({
+            depth,
+            ...toSnakeCaseObject({ userId, oldestTimestamp, chunkSize, startCursor, alternativeMethod }),
+        });
+        return this.#requester.get("/instagram/user/posts", params);
+    }
+
+    /**
+     * Fetch basic user information from the user id.
+     * @param {{ userId: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userBasicStats({ userId }) {
+        return this.#requester.get("/instagram/user/basic-info", toSnakeCaseObject({ userId }));
+    }
+
+    /**
+     * Fetch user information from the username.
+     * @param {{ username: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userInfo({ username }) {
+        return this.#requester.get("/instagram/user/info", { username });
+    }
+
+    /**
+     * Fetch detailed user information from the username.
+     * @param {{ username: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userDetailedInfo({ username }) {
+        return this.#requester.get("/instagram/user/detailed-info", { username }); 
+    }
+
+    /**
+     * Fetch number of followers from a user id.
+     * @param {{ userId: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userFollowers({ userId }) {
+        return this.#requester.get("/instagram/user/followers", toSnakeCaseObject({ userId })); 
+    }
+
+    /**
+     * @typedef {{
+     *   userId: number,
+     *   depth: string,
+     *   includeFeedVideo?: boolean,
+     *   oldestTimestamp?: number,
+     *   startCursor?: string,
+     *   chunkSize?: number,
+     * }} InstagramUserReelsParams
+     */
+
+    /**
+     * Fetch user reels from a user id.
+     * @param {InstagramUserReelsParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    userReels({ userId, depth, includeFeedVideo = undefined, oldestTimestamp = undefined, startCursor = undefined, chunkSize = undefined }) {
+        const params = filterUndefinedValues({
+            depth,
+            ...toSnakeCaseObject({ userId, includeFeedVideo, oldestTimestamp, startCursor, chunkSize }),
+        });
+        return this.#requester.get("/instagram/user/reels", params);
+    }
+
+    /**
+     * Fetch posts where the given user ID has been tagged.
+     * @param {{ userId: number, cursor?: string, chunkSize?: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userTaggedPosts({ userId, cursor = undefined, chunkSize = undefined }) {
+        const params = filterUndefinedValues({
+            cursor,
+            ...toSnakeCaseObject({ userId, chunkSize }),
+        });
+        return this.#requester.get("/instagram/user/tagged-posts", params);
+    }
+    
+    /**
+     * Fetch post information and optionally comments from shortcode.
+     * @param {{ code: string, numComments?: boolean }} params
+     * @returns {Promise<EDResponse>}
+     */
+    postInfoAndComments({ code, numComments = undefined }) {
+        const params = filterUndefinedValues({ code, n_comments_to_fetch: numComments });
+        return this.#requester.get("/instagram/post/details", params);
+    }
+
+    /**
+     * @typedef {{
+     *   hashtag: string,
+     *   cursor?: string,
+     *   chunkSize?: number,
+     *   getAuthorInfo?: boolean,
+     *   alternativeMethod?: boolean,
+     * }} InstagramHashtagPostsParams
+     */
+
+    /**
+     * Fetch most recent posts containing a hashtag.
+     * @param {InstagramHashtagPostsParams} params
+     * @returns {Promise<EDResponse>}
+     */
+    hashtagPosts({ hashtag, cursor = undefined, chunkSize = undefined, getAuthorInfo = undefined, alternativeMethod = undefined }) {
+        const params = filterUndefinedValues({
+            name: hashtag,
+            cursor,
+            ...toSnakeCaseObject({ chunkSize, getAuthorInfo, alternativeMethod }),
+        });
+        return this.#requester.get("/instagram/hashtag/posts", params);
+    }
+
+    /**
+     * Fetch posts from a music id.
+     * @param {{ musicId: string, cursor?: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    musicPosts({ musicId, cursor = undefined }) {
+        const params = filterUndefinedValues({ id: musicId, cursor });
+        return this.#requester.get("/instagram/music/posts", params);
+    }
+    
+    /**
+     * Fetch users, places and hashtag information from text.
+     * @param {{ text: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    search({ text }) {
+        return this.#requester.get("/instagram/search", { text });
+    }
+
+}
+
+
 class CustomerClient {
     /**
      * @type {Requester}
@@ -396,6 +562,10 @@ export class EDClient {
 
         /** @readonly */
         this.tiktok = new TikTokClient({ requester });
+
+        /** @readonly */
+        this.instagram = new InstagramClient({ requester });
+
     }
 
     /**
