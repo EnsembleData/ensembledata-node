@@ -1,5 +1,7 @@
-import { Requester, EDResponse } from "./requester.js";
+import { Requester } from "./requester.js";
 import { filterUndefinedValues, toSnakeCaseObject } from "./utils.js";
+
+/** @typedef {import("./requester").EDResponse} EDResponse */
 
 class TikTokClient {
     /**
@@ -326,6 +328,33 @@ class TikTokClient {
         return this.#requester.get("/tt/music/details", { id: musicId });
     }
 
+    /**
+     * Fetch followers for a given user. Each request returns a chunk of 100 followers.
+     * @param {{ userId: string; secUid: string; cursor: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userFollowers({ userId, secUid, cursor }) {
+        return this.#requester.get("/tt/user/followers", { id: userId, secUid, cursor });
+    }
+
+    /**
+     * Fetch followings for a given user. Each request returns a chunk of 100 followings.
+     * @param {{ userId: string; secUid: string; cursor: number, pageToken: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    userFollowings({ userId, secUid, cursor, pageToken }) {
+        const params = { id: userId, secUid, cursor, ...toSnakeCaseObject({ pageToken }) };
+        return this.#requester.get("/tt/user/followings", params);
+    }
+
+    /**
+     * Fetch the list of user's liked posts (only if publicly available).
+     * @param {{ secUid: string; cursor: number }} params 
+     * @returns {Promise<EDResponse>}
+     */
+    userLikedPosts({ secUid, cursor }) {
+        return this.#requester.get("/tt/user/liked-posts", { secUid, cursor });
+    }
 
 }
 
