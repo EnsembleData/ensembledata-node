@@ -675,6 +675,112 @@ class YoutubeClient {
         });
         return this.#requester.get("/youtube/hashtag/search", params);
     }
+
+    /**
+     * Get detailed information for a specific Youtube channel from its ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
+     *
+     * @param {{ channelId: string, fromUrl?: boolean }} params
+     * @returns {Promise<EDResponse>}
+     */
+    channelDetailedInfo({ channelId, fromUrl = undefined }) {
+        const params = filterUndefinedValues({
+            browseId: channelId,
+            ...toSnakeCaseObject({ fromUrl }),
+        });
+        return this.#requester.get("/youtube/channel/detailed-info", params);
+    }
+
+    /**
+     * Fetch videos for a given channel from its ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
+     *
+     * @param {{ channelId: string; depth: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    channelVideos({ channelId, depth }) {
+        return this.#requester.get("/youtube/channel/videos", {
+            browseId: channelId,
+            depth,
+        });
+    }
+
+    /**
+     * Fetch Youtube Shorts for a given channel from its ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
+     *
+     * @param {{ channelId: string; depth: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    channelShorts({ channelId, depth }) {
+        return this.#requester.get("/youtube/channel/shorts", {
+            browseId: channelId,
+            depth,
+        });
+    }
+
+    /**
+     * Fetch statistics for a Youtube Short or Video from its channel ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
+     *
+     * @param {{ id: string, alternativeMethod?: boolean, getSubscribersCount?: boolean }} params
+     * @returns {Promise<EDResponse>}
+     */
+    videoDetails({ id, alternativeMethod = undefined, getSubscribersCount = undefined }) {
+        const params = filterUndefinedValues({
+            id,
+            ...toSnakeCaseObject({ alternativeMethod, getSubscribersCount }),
+        });
+        return this.#requester.get("/youtube/channel/get-short-stats", params);
+    }
+
+    /**
+     * Fetch the number of subscribers for a channel from its ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
+     *
+     * @param {{ channelId: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    channelSubscribers({ channelId }) {
+        return this.#requester.get("/youtube/channel/followers", { browseId: channelId });
+    }
+
+    /**
+     * Get the channel ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA) from the channel username (youtube.com/@MrBeast).
+     *
+     * @param {{ username: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    channelUsernameToId({ username }) {
+        return this.#requester.get("/youtube/channel/name-to-id", { name: username });
+    }
+
+    /**
+     * Get the channel username (youtube.com/@MrBeast) from the channel ID (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
+     *
+     * @param {{ channelId: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    channelIdToUsername({ channelId }) {
+        return this.#requester.get("/youtube/channel/id-to-name", { browseId: channelId });
+    }
+
+    /**
+     * Get shorts using a specific music ID.
+     *
+     * @param {{ musicId: string; depth: number }} params
+     * @returns {Promise<EDResponse>}
+     */
+    musicIdToShorts({ musicId, depth }) {
+        return this.#requester.get("/youtube/music/id-to-shorts", { id: musicId, depth });
+    }
+
+
+    /**
+     * Get comments for a specific Youtube Video or Short.
+     *
+     * @param {{ id: string; cursor?: string }} params
+     * @returns {Promise<EDResponse>}
+     */
+    videoComments({ id, cursor = undefined }) {
+        return this.#requester.get("/youtube/video/comments", { id, cursor });
+    }
+
 }
 
 class TwitchClient {
