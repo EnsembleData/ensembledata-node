@@ -15,25 +15,31 @@ export class Requester {
     /**
      * @param {string} path
      * @param {Record<string, any>} params
+     * @param {boolean} returnTopLevelData
      * @returns {Promise<EDResponse>}
      */
-    async get(path, params) {
+    async get(path, params, returnTopLevelData = false) {
         params = { ...params, token: this.#token };
         const queryParams = new URLSearchParams(params).toString();
-        return fetch(`${BASE_URL}/${path}?${queryParams}`).then(
-            this.handle_response,
+        return fetch(`${BASE_URL}/${path}?${queryParams}`).then((res) =>
+            this.handle_response(res, returnTopLevelData),
         );
     }
 
     /**
      * @param {Response} response
+     * @param {boolean} returnTopLevelData
      * @returns {Promise<EDResponse>}
      */
-    async handle_response(response) {
+    async handle_response(response, returnTopLevelData) {
         const json = await response.json();
         const unitsCharged = Number(response.headers.get("units_charged"));
 
         if ("data" in json) {
+            if (returnTopLevelData) {
+                return new EDResponse(response.status, json, unitsCharged);
+            }
+
             return new EDResponse(response.status, json.data, unitsCharged);
         }
         throw new EDError(response.status, json.detail, unitsCharged);
