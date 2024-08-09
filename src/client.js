@@ -223,11 +223,11 @@ class TikTokClient {
     /**
      * Fetch user information and statistics from the username.
      *
-     * @param {string} username
+     * @param {{ username: string }} params
      * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userInfoFromUsername(username, extraParams = {}) {
+    userInfoFromUsername({ username }, extraParams = {}) {
         return this.#requester.get("/tt/user/info", {
             ...extraParams,
             username,
@@ -272,11 +272,11 @@ class TikTokClient {
     /**
      * Fetch post information and statistics from URL.
      *
-     * @param {string} url
+     * @param {{ url: string }} url
      * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    postInfo(url, extraParams = {}) {
+    postInfo({ url }, extraParams = {}) {
         return this.#requester.get("/tt/post/info", { ...extraParams, url });
     }
 
@@ -284,11 +284,11 @@ class TikTokClient {
      * Fetch information for multiple post IDs passed as input parameter. The
      * endpoint can return maximum up to 100 posts together.
      *
-     * @param {string[]} awemeIds
+     * @param {{ awemeIds: string[] }} params
      * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    multiPostInfo(awemeIds, extraParams = {}) {
+    multiPostInfo({ awemeIds }, extraParams = {}) {
         return this.#requester.get("/tt/post/multi-info", {
             ...extraParams,
             ids: awemeIds.join(";"),
@@ -384,11 +384,11 @@ class TikTokClient {
     /**
      * Fetch detailed information for a music ID.
      *
-     * @param {string} musicId
+     * @param {{ musicId: string }} params
      * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    musicDetails(musicId, extraParams = {}) {
+    musicDetails({ musicId }, extraParams = {}) {
         const params = filterUndefinedValues({ ...extraParams, id: musicId });
         return this.#requester.get("/tt/music/details", params);
     }
@@ -473,7 +473,7 @@ class InstagramClient {
      *     depth: number;
      *     oldestTimestamp?: number;
      *     chunkSize?: number;
-     *     startCursor?: string;
+     *     cursor?: string;
      *     alternativeMethod?: boolean;
      * }} InstagramUserPostsParams
      */
@@ -482,6 +482,7 @@ class InstagramClient {
      * Fetch user posts from the user id.
      *
      * @param {InstagramUserPostsParams} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
     userPosts({
@@ -489,16 +490,17 @@ class InstagramClient {
         depth,
         oldestTimestamp = undefined,
         chunkSize = undefined,
-        startCursor = undefined,
+        cursor = undefined,
         alternativeMethod = undefined,
-    }) {
+    }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             depth,
             ...toSnakeCaseObject({
                 userId,
                 oldestTimestamp,
                 chunkSize,
-                startCursor,
+                startCursor: cursor,
                 alternativeMethod,
             }),
         });
@@ -509,48 +511,48 @@ class InstagramClient {
      * Fetch basic user information from the user id.
      *
      * @param {{ userId: number }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userBasicStats({ userId }) {
-        return this.#requester.get(
-            "/instagram/user/basic-info",
-            toSnakeCaseObject({ userId }),
-        );
+    userBasicStats({ userId }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, ...toSnakeCaseObject({ userId }) });
+        return this.#requester.get( "/instagram/user/basic-info", params);
     }
 
     /**
      * Fetch user information from the username.
      *
      * @param {{ username: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userInfo({ username }) {
-        return this.#requester.get("/instagram/user/info", { username });
+    userInfo({ username }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, username });
+        return this.#requester.get("/instagram/user/info", params);
     }
 
     /**
      * Fetch detailed user information from the username.
      *
      * @param {{ username: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userDetailedInfo({ username }) {
-        return this.#requester.get("/instagram/user/detailed-info", {
-            username,
-        });
+    userDetailedInfo({ username }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, username });
+        return this.#requester.get("/instagram/user/detailed-info", params);
     }
 
     /**
      * Fetch number of followers from a user id.
      *
      * @param {{ userId: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userFollowers({ userId }) {
-        return this.#requester.get(
-            "/instagram/user/followers",
-            toSnakeCaseObject({ userId }),
-        );
+    userFollowers({ userId }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, ...toSnakeCaseObject({ userId }) });
+        return this.#requester.get( "/instagram/user/followers", params);
     }
 
     /**
@@ -559,7 +561,7 @@ class InstagramClient {
      *     depth: string;
      *     includeFeedVideo?: boolean;
      *     oldestTimestamp?: number;
-     *     startCursor?: string;
+     *     cursor?: string;
      *     chunkSize?: number;
      * }} InstagramUserReelsParams
      */
@@ -568,6 +570,7 @@ class InstagramClient {
      * Fetch user reels from a user id.
      *
      * @param {InstagramUserReelsParams} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
     userReels({
@@ -575,16 +578,17 @@ class InstagramClient {
         depth,
         includeFeedVideo = undefined,
         oldestTimestamp = undefined,
-        startCursor = undefined,
+        cursor = undefined,
         chunkSize = undefined,
-    }) {
+    }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             depth,
             ...toSnakeCaseObject({
                 userId,
                 includeFeedVideo,
                 oldestTimestamp,
-                startCursor,
+                startCursor: cursor,
                 chunkSize,
             }),
         });
@@ -595,10 +599,12 @@ class InstagramClient {
      * Fetch posts where the given user ID has been tagged.
      *
      * @param {{ userId: number; cursor?: string; chunkSize?: number }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userTaggedPosts({ userId, cursor = undefined, chunkSize = undefined }) {
+    userTaggedPosts({ userId, cursor = undefined, chunkSize = undefined }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             cursor,
             ...toSnakeCaseObject({ userId, chunkSize }),
         });
@@ -609,10 +615,12 @@ class InstagramClient {
      * Fetch post information and optionally comments from shortcode.
      *
      * @param {{ code: string; numComments?: boolean }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    postInfoAndComments({ code, numComments = undefined }) {
+    postInfoAndComments({ code, numComments = undefined }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             code,
             n_comments_to_fetch: numComments,
         });
@@ -633,6 +641,7 @@ class InstagramClient {
      * Fetch most recent posts containing a hashtag.
      *
      * @param {InstagramHashtagPostsParams} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
     hashtagPosts({
@@ -641,8 +650,9 @@ class InstagramClient {
         chunkSize = undefined,
         getAuthorInfo = undefined,
         alternativeMethod = undefined,
-    }) {
+    }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             name: hashtag,
             cursor,
             ...toSnakeCaseObject({
@@ -658,10 +668,11 @@ class InstagramClient {
      * Fetch posts from a music id.
      *
      * @param {{ musicId: string; cursor?: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    musicPosts({ musicId, cursor = undefined }) {
-        const params = filterUndefinedValues({ id: musicId, cursor });
+    musicPosts({ musicId, cursor = undefined }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, id: musicId, cursor });
         return this.#requester.get("/instagram/music/posts", params);
     }
 
@@ -669,10 +680,12 @@ class InstagramClient {
      * Fetch users, places and hashtag information from text.
      *
      * @param {{ text: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    search({ text }) {
-        return this.#requester.get("/instagram/search", { text });
+    search({ text }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, text });
+        return this.#requester.get("/instagram/search", params);
     }
 }
 
@@ -692,7 +705,7 @@ class YoutubeClient {
      * @typedef {{
      *     keyword: string;
      *     depth: number;
-     *     startCursor?: string;
+     *     cursor?: string;
      *     period?: "overall" | "hour" | "today" | "week" | "month" | "year";
      *     sorting?: "relevance" | "time" | "views" | "rating";
      *     getAdditionalInfo?: boolean;
@@ -703,22 +716,24 @@ class YoutubeClient {
      * Fetch videos from a given keyword.
      *
      * @param {YoutubeKeywordSearchParams} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
     keywordSeach({
         keyword,
         depth,
-        startCursor = undefined,
+        cursor = undefined,
         period = undefined,
         sorting = undefined,
         getAdditionalInfo = undefined,
-    }) {
+    }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             keyword,
             depth,
             period,
             sorting,
-            ...toSnakeCaseObject({ startCursor, getAdditionalInfo }),
+            ...toSnakeCaseObject({ startCursor: cursor, getAdditionalInfo }),
         });
         return this.#requester.get("/youtube/search", params);
     }
@@ -727,22 +742,24 @@ class YoutubeClient {
      * Fetch the related categories showing on Youtube search keyword.
      *
      * @param {{ keyword: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    featuredCategoriesSearch({ keyword }) {
-        return this.#requester.get("/youtube/search/featured-categories", {
-            name: keyword,
-        });
+    featuredCategoriesSearch({ keyword }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, name: keyword });
+        return this.#requester.get("/youtube/search/featured-categories", params);
     }
 
     /**
      * Fetch videos from a given hashtag.
      *
      * @param {{ hashtag: string; depth: number; onlyShorts?: boolean }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    hashtagSearch({ hashtag, depth, onlyShorts = undefined }) {
+    hashtagSearch({ hashtag, depth, onlyShorts = undefined }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             name: hashtag,
             depth,
             ...toSnakeCaseObject({ onlyShorts }),
@@ -755,10 +772,12 @@ class YoutubeClient {
      * (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
      *
      * @param {{ channelId: string; fromUrl?: boolean }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    channelDetailedInfo({ channelId, fromUrl = undefined }) {
+    channelDetailedInfo({ channelId, fromUrl = undefined }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             browseId: channelId,
             ...toSnakeCaseObject({ fromUrl }),
         });
@@ -770,13 +789,12 @@ class YoutubeClient {
      * (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
      *
      * @param {{ channelId: string; depth: number }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    channelVideos({ channelId, depth }) {
-        return this.#requester.get("/youtube/channel/videos", {
-            browseId: channelId,
-            depth,
-        });
+    channelVideos({ channelId, depth }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, browseId: channelId, depth });
+        return this.#requester.get("/youtube/channel/videos", params);
     }
 
     /**
@@ -784,13 +802,12 @@ class YoutubeClient {
      * (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
      *
      * @param {{ channelId: string; depth: number }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    channelShorts({ channelId, depth }) {
-        return this.#requester.get("/youtube/channel/shorts", {
-            browseId: channelId,
-            depth,
-        });
+    channelShorts({ channelId, depth }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, browseId: channelId, depth });
+        return this.#requester.get("/youtube/channel/shorts", params);
     }
 
     /**
@@ -802,14 +819,16 @@ class YoutubeClient {
      *     alternativeMethod?: boolean;
      *     getSubscribersCount?: boolean;
      * }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
     videoDetails({
         id,
         alternativeMethod = undefined,
         getSubscribersCount = undefined,
-    }) {
+    }, extraParams = {}) {
         const params = filterUndefinedValues({
+            ...extraParams,
             id,
             ...toSnakeCaseObject({ alternativeMethod, getSubscribersCount }),
         });
@@ -821,12 +840,12 @@ class YoutubeClient {
      * (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
      *
      * @param {{ channelId: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    channelSubscribers({ channelId }) {
-        return this.#requester.get("/youtube/channel/followers", {
-            browseId: channelId,
-        });
+    channelSubscribers({ channelId }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, browseId: channelId });
+        return this.#requester.get("/youtube/channel/followers", params);
     }
 
     /**
@@ -834,12 +853,12 @@ class YoutubeClient {
      * the channel username (youtube.com/@MrBeast).
      *
      * @param {{ username: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    channelUsernameToId({ username }) {
-        return this.#requester.get("/youtube/channel/name-to-id", {
-            name: username,
-        });
+    channelUsernameToId({ username }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, name: username });
+        return this.#requester.get("/youtube/channel/name-to-id", params);
     }
 
     /**
@@ -847,35 +866,36 @@ class YoutubeClient {
      * (youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA).
      *
      * @param {{ channelId: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    channelIdToUsername({ channelId }) {
-        return this.#requester.get("/youtube/channel/id-to-name", {
-            browseId: channelId,
-        });
+    channelIdToUsername({ channelId }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, browseId: channelId });
+        return this.#requester.get("/youtube/channel/id-to-name", params);
     }
 
     /**
      * Get shorts using a specific music ID.
      *
      * @param {{ musicId: string; depth: number }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    musicIdToShorts({ musicId, depth }) {
-        return this.#requester.get("/youtube/music/id-to-shorts", {
-            id: musicId,
-            depth,
-        });
+    musicIdToShorts({ musicId, depth }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, id: musicId, depth });
+        return this.#requester.get("/youtube/music/id-to-shorts", params);
     }
 
     /**
      * Get comments for a specific Youtube Video or Short.
      *
      * @param {{ id: string; cursor?: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    videoComments({ id, cursor = undefined }) {
-        return this.#requester.get("/youtube/video/comments", { id, cursor });
+    videoComments({ id, cursor = undefined }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, id, cursor });
+        return this.#requester.get("/youtube/video/comments", params);
     }
 }
 
@@ -899,20 +919,24 @@ class TwitchClient {
      *     depth: number;
      *     type: "videos" | "channels" | "games";
      * }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    searchKeyword({ keyword, depth, type }) {
-        return this.#requester.get("/twitch/search", { keyword, depth, type });
+    searchKeyword({ keyword, depth, type }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, keyword, depth, type });
+        return this.#requester.get("/twitch/search", params);
     }
 
     /**
      * Fetch the number of followers for the given channel.
      *
      * @param {{ username: string }} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    userFollowers({ username }) {
-        return this.#requester.get("/twitch/user/followers", { username });
+    userFollowers({ username }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, username });
+        return this.#requester.get("/twitch/user/followers", params);
     }
 }
 
@@ -933,7 +957,7 @@ class RedditClient {
      *     name: string;
      *     sort: "hot" | "new" | "top" | "rising";
      *     period: "hour" | "day" | "week" | "month" | "year" | "all";
-     *     cursor: string;
+     *     cursor?: string;
      * }} RedditSubredditPostsParams
      */
 
@@ -941,27 +965,24 @@ class RedditClient {
      * Fetch posts from a subreddit.
      *
      * @param {RedditSubredditPostsParams} params
+     * @param {Record<string, any>} extraParams
      * @returns {Promise<EDResponse>}
      */
-    subredditPosts({ name, sort, period, cursor }) {
-        return this.#requester.get("/reddit/subreddit/posts", {
-            name,
-            sort,
-            period,
-            cursor,
-        });
+    subredditPosts({ name, sort, period, cursor = undefined }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, name, sort, period, cursor });
+        return this.#requester.get("/reddit/subreddit/posts", params);
     }
 
     /**
      * Fetch comments from a post.
      *
-     * @param {{ postId: string; cursor: string }} params
+     * @param {{ id: string; cursor?: string }} params
+     * @param {Record<string, any>} extraParams
+     * @returns {Promise<EDResponse>}
      */
-    postComments({ postId, cursor }) {
-        return this.#requester.get("/reddit/post/comments", {
-            id: postId,
-            cursor,
-        });
+    postComments({ id, cursor = undefined }, extraParams = {}) {
+        const params = filterUndefinedValues({ ...extraParams, id, cursor });
+        return this.#requester.get("/reddit/post/comments", params);
     }
 }
 
