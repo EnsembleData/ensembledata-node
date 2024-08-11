@@ -1,0 +1,84 @@
+import { Requester } from "./requester.js";
+import { filterUndefinedValues } from "./utils.js";
+
+/** @typedef {import("./requester").EDResponse} EDResponse */
+
+{% for tag, endpoints in tags %}
+class {{ tag }}Endpoints {
+
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    {% raw %}
+    /** @param {{ requester: Requester }} options */{% endraw %}
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+    {% for endpoint in endpoints %}
+    /**
+     * @param {% raw %}{{{% endraw %}
+    {%- for param in endpoint.params -%}
+         {{ param.name }}{{ "?" if not param.required }}: {{ param.type | safe }};{{ " " }}
+    {%- endfor %}
+    {% raw %}}}{% endraw %} params 
+     * @param {Record<string, any>} extraParams
+     * @returns {Promise<EDResponse>}
+     */
+    {{ endpoint.functionName }}({
+    {% for param in endpoint.params %}
+        {{ param.name }}{{ "" if param.required else " = undefined" }},
+    {% endfor %}
+    }, extraParams = {}) {
+        const params = filterUndefinedValues({
+            ...extraParams,
+        {% for param in endpoint.params %}
+        {% if param.transform == "join_with_semicolon" %}
+            {{ param.param }}: {{ param.name }}.join(";")
+        {% elif param.name == param.param %}
+            {{ param.param }},
+        {% else %}
+            {{ param.param }}: {{ param.name }},
+        {% endif %}
+        {% endfor %}
+        });
+        return this.#requester.get("{{ endpoint.path }}", params);
+    }
+
+    {% endfor %}
+}
+
+{% endfor %}
+
+export class EDClient {
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {% raw %}{{ token: string }}{% endraw %} options */
+    constructor({ token }) {
+        const requester = new Requester({ token });
+        this.#requester = requester;
+
+        {% for tag, _ in tags %}
+        /** @readonly */
+        this.customer = new {{ tag }}Endpoints({ requester });
+
+        {% endfor %}
+    }
+
+    /**
+     * @param {string} path
+     * @param {Record<string, string>} params
+     * @returns {Promise<EDResponse>}
+     */
+    async request(path, params) {
+        return this.#requester.get(path, params);
+    }
+}
+

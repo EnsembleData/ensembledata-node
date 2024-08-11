@@ -1,6 +1,5 @@
 # EnsembleData NodeJS API
 
-
 ## Documentation
 
 Check out the [API docs](https://ensembledata.com/apis/docs) to see which endpoints are available for each social media and for detailed descriptions of their parameters and functionality.
@@ -23,21 +22,22 @@ pnpm add ensembledata
 
 ### Requirements
 
-- The package requires Node 18 or above.
+-   The package requires Node 18 or above.
 
 ## Usage
 
 [Register](https://dashboard.ensembledata.com/register) to get your free API token.
 
 ```javascript
-import { EDClient } from 'ensembledata';
+import { EDClient } from "ensembledata";
 
+const client = EDClient({ token: "API-TOKEN" });
+const result = await client.tiktok.userInfoFromUsername({
+    username: "daviddobrik",
+});
 
-const client = EDClient({ token: "API-TOKEN" })
-const result = await client.tiktok.userInfoFromUsername({ username: "daviddobrik" })
-
-console.log("Data: ", result.data)
-console.log("Units charged:", result.unitsCharged)
+console.log("Data: ", result.data);
+console.log("Units charged:", result.unitsCharged);
 
 // Other Examples:
 // const result = await client.instagram.userInfo({ username: "daviddobrik" })
@@ -49,21 +49,28 @@ console.log("Units charged:", result.unitsCharged)
 
 ### Missing Endpoints / Parameters
 
-If you find that one of the endpoints from our [API docs](https://ensembledata.com/apis/docs) is not yet available in this package, you can use the `EDClient.request` method to specify the endpoint manually in the meantime. 
+If you find that one of the endpoints from our [API docs](https://ensembledata.com/apis/docs) is not yet available in this package, you can use the `EDClient.request` method to specify the endpoint manually in the meantime.
 
 ```javascript
-import { EDClient } from 'ensembledata';
+import { EDClient } from "ensembledata";
 
-const client = EDClient({ token: "API-TOKEN" })
-const result = await client.request("/instagram/example", {"foo": "...", "bar": "..."})
+const client = EDClient({ token: "API-TOKEN" });
+const result = await client.request("/instagram/example", {
+    foo: "...",
+    bar: "...",
+});
 ```
 
 If you find that one the parameters to an existing endpoint is missing, you can still send this parameter via the `extraParams` object which is available on all endpoint methods as the second parameter. See the example below:
-```javascript
-import { EDClient } from 'ensembledata';
 
-const client = EDClient({ token: "API-TOKEN" })
-const result = await client.instagram.userInfo({ username: "..." }, { baz: "..." })
+```javascript
+import { EDClient } from "ensembledata";
+
+const client = EDClient({ token: "API-TOKEN" });
+const result = await client.instagram.userInfo(
+    { username: "..." },
+    { baz: "..." },
+);
 ```
 
 <br>
@@ -71,27 +78,26 @@ const result = await client.instagram.userInfo({ username: "..." }, { baz: "..."
 
 ### Handling Errors
 
-In the [API docs](https://ensembledata.com/apis/docs), each endpoint lists a handful of possible errors the API may respond with. You can handle these errors by catching the `EDError` exception. 
+In the [API docs](https://ensembledata.com/apis/docs), each endpoint lists a handful of possible errors the API may respond with. You can handle these errors by catching the `EDError` exception.
 
 ```javascript
-import { EDClient } from 'ensembledata';
+import { EDClient } from "ensembledata";
 
-
-const client = EDClient({ token: "API-TOKEN" })
+const client = EDClient({ token: "API-TOKEN" });
 try {
-    const result = await client.tiktok.userInfoFromUsername({ username: "daviddobrik" })
+    const result = await client.tiktok.userInfoFromUsername({
+        username: "daviddobrik",
+    });
 } catch (error) {
-
     switch (error.status_code) {
-
         // Rate limit exceeded...
         case 429:
-            console.log(error.detail)
+            console.log(error.detail);
             break;
 
         // Subscription expired...
         case 493:
-            console.log(error.detail)
+            console.log(error.detail);
             break;
 
         // Some other error occurred, unrelated to the EnsembleData API
@@ -99,30 +105,28 @@ try {
             break;
     }
 }
-    
 ```
 
 <br>
 <br>
 
-### Using Promises 
+### Using Promises
 
 Every endpoint method returns a promise. You can use the `.then()` and `.catch()` methods to handle the result and errors respectively.
 
 ```javascript
-import { EDClient } from 'ensembledata';
+import { EDClient } from "ensembledata";
 
-
-const client = EDClient({ token: "API-TOKEN" })
-client.tiktok.userInfoFromUsername({ username: "daviddobrik" })
+const client = EDClient({ token: "API-TOKEN" });
+client.tiktok
+    .userInfoFromUsername({ username: "daviddobrik" })
     .then((result) => {
-        console.log("Data: ", result.data)
-        console.log("Units charged:", result.unitsCharged)
+        console.log("Data: ", result.data);
+        console.log("Units charged:", result.unitsCharged);
     })
     .catch((error) => {
-        console.log("Error: ", error)
+        console.log("Error: ", error);
     });
-
 ```
 
 ### Types
