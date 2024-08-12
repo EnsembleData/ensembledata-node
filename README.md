@@ -1,5 +1,7 @@
 # EnsembleData NodeJS API
 
+[![Version](https://img.shields.io/npm/v/ensembledata.svg?color=blue)](https://www.npmjs.org/package/ensembledata)
+
 ## Documentation
 
 Check out the [API docs](https://ensembledata.com/apis/docs) to see which endpoints are available for each social media and for detailed descriptions of their parameters and functionality.
@@ -22,7 +24,7 @@ pnpm add ensembledata
 
 ### Requirements
 
--   The package requires Node 18 or above.
+-   The package requires Node 18 or higher.
 
 ## Usage
 
