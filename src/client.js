@@ -984,19 +984,19 @@ export class EDClient {
         this.customer = new CustomerEndpoints({ requester });
 
         /** @readonly */
-        this.customer = new TiktokEndpoints({ requester });
+        this.tiktok = new TiktokEndpoints({ requester });
 
         /** @readonly */
-        this.customer = new YoutubeEndpoints({ requester });
+        this.youtube = new YoutubeEndpoints({ requester });
 
         /** @readonly */
-        this.customer = new InstagramEndpoints({ requester });
+        this.instagram = new InstagramEndpoints({ requester });
 
         /** @readonly */
-        this.customer = new TwitchEndpoints({ requester });
+        this.twitch = new TwitchEndpoints({ requester });
 
         /** @readonly */
-        this.customer = new RedditEndpoints({ requester });
+        this.reddit = new RedditEndpoints({ requester });
     }
 
     /**

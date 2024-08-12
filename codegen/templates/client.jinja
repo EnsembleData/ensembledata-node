@@ -67,7 +67,7 @@ export class EDClient {
 
         {% for tag, _ in tags %}
         /** @readonly */
-        this.customer = new {{ tag }}Endpoints({ requester });
+        this.{{ tag | lower }} = new {{ tag }}Endpoints({ requester });
 
         {% endfor %}
     }

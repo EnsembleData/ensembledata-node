@@ -1,15 +1,22 @@
 {
     "name": "ensembledata",
-    "description": "",
+    "description": "Node.js bindings for the EnsembleData API",
     "author": "EnsembleData <hello@ensembledata.com>",
     "contributors": [
         "Fayd Speare <fayd@ensembledata.com>"
     ],
-    "version": "0.0.0",
+    "homepage": "https://ensembledata.com",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ensembledata/ensembledata-node.git"
+    },
+    "bugs": "https://github.com/ensembledata/ensembledata-node/issues",
+    "scripts": {},
+    "version": "0.0.3",
     "type": "module",
     "license": "MIT",
     "main": "src/index.js",
-    "types": "dist/index.d.ts",
+    "types": "types/index.d.ts",
     "devDependencies": {
         "@eslint/js": "^9.8.0",
         "eslint-config-prettier": "^9.1.0",
