@@ -13,6 +13,9 @@ importers:
             eslint-config-prettier:
                 specifier: ^9.1.0
                 version: 9.1.0(eslint@9.8.0)
+            globals:
+                specifier: ^15.9.0
+                version: 15.9.0
             nunjucks:
                 specifier: ^3.2.4
                 version: 3.2.4
@@ -441,6 +444,13 @@ packages:
         resolution:
             {
                 integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==,
+            }
+        engines: { node: ">=18" }
+
+    globals@15.9.0:
+        resolution:
+            {
+                integrity: sha512-SmSKyLLKFbSr6rptvP8izbyxJL4ILwqO9Jg23UA0sDlGlu58V59D1//I3vlc0KJphVdUR7vMjHIplYnzBxorQA==,
             }
         engines: { node: ">=18" }
 
@@ -1150,6 +1160,8 @@ snapshots:
             is-glob: 4.0.3
 
     globals@14.0.0: {}
+
+    globals@15.9.0: {}
 
     has-flag@4.0.0: {}
 
