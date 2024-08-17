@@ -1,5 +1,6 @@
 {
     "name": "ensembledata",
+    "version": "0.0.3",
     "description": "Node.js bindings for the EnsembleData API",
     "author": "EnsembleData <hello@ensembledata.com>",
     "contributors": [
@@ -11,8 +12,6 @@
         "url": "git://github.com/ensembledata/ensembledata-node.git"
     },
     "bugs": "https://github.com/ensembledata/ensembledata-node/issues",
-    "scripts": {},
-    "version": "0.0.3",
     "type": "module",
     "license": "MIT",
     "main": "src/index.js",
@@ -24,5 +23,8 @@
         "prettier": "3.3.3",
         "prettier-plugin-jsdoc": "^1.3.0",
         "typescript": "^5.5.4"
+    },
+    "scripts": {
+        "postversion": "./scripts/sync_version.sh $npm_package_version"
     }
 }

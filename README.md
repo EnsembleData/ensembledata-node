@@ -1,4 +1,4 @@
-# EnsembleData NodeJS API
+# EnsembleData Node.js API
 
 [![Version](https://img.shields.io/npm/v/ensembledata.svg?color=blue)](https://www.npmjs.org/package/ensembledata)
 
