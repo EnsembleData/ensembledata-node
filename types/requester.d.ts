@@ -1,15 +1,26 @@
 export class Requester {
-    /** @param {{ token: string }} options */
-    constructor({ token }: {
+    /**
+     * @param {{
+     *     token: string;
+     *     timeoutSecs: number;
+     *     maxNetworkRetries: number;
+     * }} options
+     */
+    constructor({ token, timeoutSecs, maxNetworkRetries }: {
         token: string;
+        timeoutSecs: number;
+        maxNetworkRetries: number;
     });
     /**
      * @param {string} path
      * @param {Record<string, any>} params
-     * @param {boolean} returnTopLevelData
+     * @param {{ timeoutSecs?: number; returnTopLevelData?: boolean }} options
      * @returns {Promise<EDResponse>}
      */
-    get(path: string, params: Record<string, any>, returnTopLevelData?: boolean): Promise<EDResponse>;
+    get(path: string, params: Record<string, any>, options?: {
+        timeoutSecs?: number;
+        returnTopLevelData?: boolean;
+    }): Promise<EDResponse>;
     /**
      * @param {Response} response
      * @param {boolean} returnTopLevelData
@@ -29,6 +40,20 @@ export class EDResponse {
     statusCode: number;
     /** @type {any} */
     data: any;
+    /** @type {number} */
+    unitsCharged: number;
+}
+export class EDError extends Error {
+    /**
+     * @param {number} statusCode
+     * @param {string} detail
+     * @param {number} unitsCharged
+     */
+    constructor(statusCode: number, detail: string, unitsCharged: number);
+    /** @type {string} */
+    detail: string;
+    /** @type {number} */
+    statusCode: number;
     /** @type {number} */
     unitsCharged: number;
 }

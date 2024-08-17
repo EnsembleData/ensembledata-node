@@ -63,7 +63,7 @@ const result = await client.request("/instagram/example", {
 });
 ```
 
-If you find that one the parameters to an existing endpoint is missing, you can still send this parameter via the `extraParams` object which is available on all endpoint methods as the second parameter. See the example below:
+If you find that one the parameters to an existing endpoint is missing, you can still send this parameter via the `extraParams` which is available on all endpoint methods as shown below:
 
 ```javascript
 import { EDClient } from "ensembledata";
@@ -71,7 +71,11 @@ import { EDClient } from "ensembledata";
 const client = EDClient({ token: "API-TOKEN" });
 const result = await client.instagram.userInfo(
     { username: "..." },
-    { baz: "..." },
+    {
+        extraParams: {
+            baz: "...",
+        },
+    },
 );
 ```
 
@@ -83,7 +87,7 @@ const result = await client.instagram.userInfo(
 In the [API docs](https://ensembledata.com/apis/docs), each endpoint lists a handful of possible errors the API may respond with. You can handle these errors by catching the `EDError` exception.
 
 ```javascript
-import { EDClient } from "ensembledata";
+import { EDClient, errors } from "ensembledata";
 
 const client = EDClient({ token: "API-TOKEN" });
 try {
@@ -93,12 +97,12 @@ try {
 } catch (error) {
     switch (error.status_code) {
         // Rate limit exceeded...
-        case 429:
+        case errors.STATUS_429_RATE_LIMIT_EXCEEDED:
             console.log(error.detail);
             break;
 
         // Subscription expired...
-        case 493:
+        case errors.STATUS_493_SUBSCRIPTION_EXPIRED:
             console.log(error.detail);
             break;
 
@@ -129,6 +133,32 @@ client.tiktok
     .catch((error) => {
         console.log("Error: ", error);
     });
+```
+
+### Network Retries
+
+By default the `EDClient` will perform 3 retries when it encounters network issues. If you would like to customise this behaviour, you can pass in the `maxNetworkRetries` param as show below:
+
+Note: if the request times out, it will not be retried.
+
+```javascript
+import { EDClient } from "ensembledata";
+
+const client = EDClient({ token: "API-TOKEN", maxNetworkRetries: 5 });
+```
+
+### Configure Timeout
+
+If you would like control over the read timeout, you can configure this either for all request by setting `timeoutSecs` when creating the `EDClient`, or you can specify the `timeoutSecs` per request, on any of the individual methods as shown below:
+
+```javascript
+import { EDClient } from "ensembledata";
+
+const client = EDClient({ token: "API-TOKEN", timeoutSecs: 120 });
+const result = await client.instagram.userInfo(
+    { username: "..." },
+    { timeoutSecs: 10 },
+);
 ```
 
 ### Types

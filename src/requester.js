@@ -1,3 +1,5 @@
+import { VERSION } from "./version.js";
+
 const BASE_URL = "https://ensembledata.com/apis";
 
 export class Requester {
@@ -7,22 +9,66 @@ export class Requester {
      */
     #token;
 
-    /** @param {{ token: string }} options */
-    constructor({ token }) {
+    /**
+     * @type {number}
+     * @readonly
+     */
+    #timeoutSecs;
+
+    /**
+     * @type {number}
+     * @readonly
+     */
+    #maxNetworkRetries;
+
+    /**
+     * @param {{
+     *     token: string;
+     *     timeoutSecs: number;
+     *     maxNetworkRetries: number;
+     * }} options
+     */
+    constructor({ token, timeoutSecs, maxNetworkRetries }) {
         this.#token = token;
+        this.#timeoutSecs = timeoutSecs;
+        this.#maxNetworkRetries = maxNetworkRetries;
     }
 
     /**
      * @param {string} path
      * @param {Record<string, any>} params
-     * @param {boolean} returnTopLevelData
+     * @param {{ timeoutSecs?: number; returnTopLevelData?: boolean }} options
      * @returns {Promise<EDResponse>}
      */
-    async get(path, params, returnTopLevelData = false) {
+    async get(path, params, options = {}) {
         params = { ...params, token: this.#token };
         const queryParams = new URLSearchParams(params).toString();
-        return fetch(`${BASE_URL}/${path}?${queryParams}`).then((res) =>
-            this.handle_response(res, returnTopLevelData),
+        const timeoutMS =
+            (options.timeoutSecs === undefined
+                ? this.#timeoutSecs
+                : options.timeoutSecs) * 1_000;
+        const returnTopLevelData = options.returnTopLevelData || false;
+
+        for (let i = 0; i < this.#maxNetworkRetries; i++) {
+            try {
+                const res = await fetch(`${BASE_URL}/${path}?${queryParams}`, {
+                    signal: AbortSignal.timeout(timeoutMS),
+                    headers: {
+                        "User-Agent": `ensembledata-node/${VERSION}`,
+                    },
+                });
+                return this.handle_response(res, returnTopLevelData);
+            } catch (/** @type {any} */ e) {
+                if (e.name === "TimeoutError") {
+                    throw new Error(
+                        "Request to EnsembleData timed out. Contact support if this issue persists.",
+                    );
+                }
+            }
+        }
+
+        throw new Error(
+            `Failed to fetch data after ${this.#maxNetworkRetries} attempts.`,
         );
     }
 
@@ -64,7 +110,7 @@ export class EDResponse {
     }
 }
 
-class EDError extends Error {
+export class EDError extends Error {
     /**
      * @param {number} statusCode
      * @param {string} detail

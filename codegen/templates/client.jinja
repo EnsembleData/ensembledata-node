@@ -25,16 +25,16 @@ class {{ tag }}Endpoints {
          {{ param.name }}{{ "?" if not param.required }}: {{ param.type | safe }};{{ " " }}
     {%- endfor %}
     {% raw %}}}{% endraw %} params 
-     * @param {Record<string, any>} extraParams
+     * @param {% raw %}{{ extraParams?: Record<string, any>, timeoutSecs?: number }} options{% endraw %}
      * @returns {Promise<EDResponse>}
      */
     {{ endpoint.functionName }}({
     {% for param in endpoint.params %}
         {{ param.name }}{{ "" if param.required else " = undefined" }},
     {% endfor %}
-    }, extraParams = {}) {
+    }, options = {}) {
         const params = filterUndefinedValues({
-            ...extraParams,
+            ...options.extraParams,
         {% for param in endpoint.params %}
         {% if param.transform == "join_with_semicolon" %}
             {{ param.param }}: {{ param.name }}.join(";")
@@ -45,7 +45,7 @@ class {{ tag }}Endpoints {
         {% endif %}
         {% endfor %}
         });
-        return this.#requester.get("{{ endpoint.path }}", params);
+        return this.#requester.get("{{ endpoint.path }}", params, { timeoutSecs: options.timeoutSecs, {{ "returnTopLevelData: true" if endpoint.returnTopLevelData }} });
     }
 
     {% endfor %}
@@ -60,9 +60,9 @@ export class EDClient {
      */
     #requester;
 
-    /** @param {% raw %}{{ token: string }}{% endraw %} options */
-    constructor({ token }) {
-        const requester = new Requester({ token });
+    /** @param {% raw %}{{ token: string, timeoutSecs?: number, maxNetworkRetries?: number }}{% endraw %} options */
+    constructor({ token, timeoutSecs = 600, maxNetworkRetries = 3 }) {
+        const requester = new Requester({ token, timeoutSecs, maxNetworkRetries });
         this.#requester = requester;
 
         {% for tag, _ in tags %}

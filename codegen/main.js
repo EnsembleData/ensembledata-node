@@ -87,6 +87,10 @@ function parseEndpointByTag(openapi) {
             functionName,
             path,
             params,
+            returnTopLevelData: [
+                "tiktok_user_posts_from_username",
+                "tiktok_user_posts_from_secuid",
+            ].includes(operationId),
         });
     }
     return tags;

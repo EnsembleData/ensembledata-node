@@ -1,7 +1,15 @@
 export class EDClient {
-    /** @param {{ token: string }} options */
-    constructor({ token }: {
+    /**
+     * @param {{
+     *     token: string;
+     *     timeoutSecs?: number;
+     *     maxNetworkRetries?: number;
+     * }} options
+     */
+    constructor({ token, timeoutSecs, maxNetworkRetries }: {
         token: string;
+        timeoutSecs?: number;
+        maxNetworkRetries?: number;
     });
     /** @readonly */
     readonly customer: CustomerEndpoints;
@@ -32,20 +40,26 @@ declare class CustomerEndpoints {
     });
     /**
      * @param {{ date: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     getUsage({ date }: {
         date: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ days: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     getUsageHistory({ days }: {
         days: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     #private;
 }
 declare class TiktokEndpoints {
@@ -55,13 +69,16 @@ declare class TiktokEndpoints {
     });
     /**
      * @param {{ hashtag: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagSearch({ hashtag, cursor }: {
         hashtag: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     hashtag: string;
@@ -69,7 +86,7 @@ declare class TiktokEndpoints {
      *     remapOutput?: boolean;
      *     maxCursor?: number;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     fullHashtagSearch({ hashtag, days, remapOutput, maxCursor }: {
@@ -77,29 +94,35 @@ declare class TiktokEndpoints {
         days: number;
         remapOutput?: boolean;
         maxCursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     keyword: string;
      *     cursor?: number;
      *     period: "0" | "1" | "7" | "30" | "90" | "180";
-     *     sorting: "0" | "1";
+     *     sorting?: "0" | "1";
      *     country?: string;
      *     matchExactly?: boolean;
      *     getAuthorStats?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     keywordSearch({ keyword, cursor, period, sorting, country, matchExactly, getAuthorStats, }: {
         keyword: string;
         cursor?: number;
         period: "0" | "1" | "7" | "30" | "90" | "180";
-        sorting: "0" | "1";
+        sorting?: "0" | "1";
         country?: string;
         matchExactly?: boolean;
         getAuthorStats?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     keyword: string;
@@ -108,7 +131,7 @@ declare class TiktokEndpoints {
      *     country?: string;
      *     matchExactly?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     fullKeywordSearch({ keyword, period, sorting, country, matchExactly, }: {
@@ -117,7 +140,10 @@ declare class TiktokEndpoints {
         sorting?: "0" | "1";
         country?: string;
         matchExactly?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     username: string;
@@ -126,7 +152,7 @@ declare class TiktokEndpoints {
      *     oldestCreatetime?: number;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userPostsFromUsername({ username, depth, cursor, oldestCreatetime, alternativeMethod, }: {
@@ -135,7 +161,10 @@ declare class TiktokEndpoints {
         cursor?: number;
         oldestCreatetime?: number;
         alternativeMethod?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     secUid: string;
@@ -144,7 +173,7 @@ declare class TiktokEndpoints {
      *     oldestCreatetime?: number;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userPostsFromSecuid({ secUid, depth, cursor, oldestCreatetime, alternativeMethod, }: {
@@ -153,111 +182,147 @@ declare class TiktokEndpoints {
         cursor?: number;
         oldestCreatetime?: number;
         alternativeMethod?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ username: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfoFromUsername({ username }: {
         username: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ secUid: string; alternativeMethod?: boolean }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfoFromSecuid({ secUid, alternativeMethod }: {
         secUid: string;
         alternativeMethod?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ keyword: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userSearch({ keyword, cursor }: {
         keyword: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ url: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postInfo({ url }: {
         url: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ awemeIds: string[] }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     multiPostInfo({ awemeIds }: {
         awemeIds: string[];
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ awemeId: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postComments({ awemeId, cursor }: {
         awemeId: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ awemeId: string; commentId: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postCommentReplies({ awemeId, commentId, cursor }: {
         awemeId: string;
         commentId: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     keyword: string;
      *     cursor?: number;
-     *     sorting: "0" | "1" | "2" | "3" | "4";
-     *     filterBy: "0" | "1" | "2";
+     *     sorting?: "0" | "1" | "2" | "3" | "4";
+     *     filterBy?: "0" | "1" | "2";
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    musicSearch({ keyword, cursor, sorting, filterBy }: {
+    musicSearch({ keyword, cursor, sorting, filterBy, }: {
         keyword: string;
         cursor?: number;
-        sorting: "0" | "1" | "2" | "3" | "4";
-        filterBy: "0" | "1" | "2";
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+        sorting?: "0" | "1" | "2" | "3" | "4";
+        filterBy?: "0" | "1" | "2";
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ musicId: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicPosts({ musicId, cursor }: {
         musicId: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ musicId: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicDetails({ musicId }: {
         musicId: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ id: string; secUid: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers({ id, secUid, cursor }: {
         id: string;
         secUid: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     id: string;
@@ -265,7 +330,7 @@ declare class TiktokEndpoints {
      *     cursor?: number;
      *     pageToken?: string;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowings({ id, secUid, cursor, pageToken }: {
@@ -273,16 +338,22 @@ declare class TiktokEndpoints {
         secUid: string;
         cursor?: number;
         pageToken?: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ secUid: string; cursor?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userLikedPosts({ secUid, cursor }: {
         secUid: string;
         cursor?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     #private;
 }
 declare class YoutubeEndpoints {
@@ -299,7 +370,7 @@ declare class YoutubeEndpoints {
      *     sorting?: "relevance" | "time" | "views" | "rating";
      *     getAdditionalInfo?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     keywordSearch({ keyword, depth, cursor, period, sorting, getAdditionalInfo, }: {
@@ -309,108 +380,144 @@ declare class YoutubeEndpoints {
         period?: "overall" | "hour" | "today" | "week" | "month" | "year";
         sorting?: "relevance" | "time" | "views" | "rating";
         getAdditionalInfo?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ keyword: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     featuredCategoriesSearch({ keyword }: {
         keyword: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ hashtag: string; depth: number; onlyShorts?: boolean }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagSearch({ hashtag, depth, onlyShorts }: {
         hashtag: string;
         depth: number;
         onlyShorts?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ channelId: string; fromUrl?: boolean }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelDetailedInfo({ channelId, fromUrl }: {
         channelId: string;
         fromUrl?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ channelId: string; depth: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelVideos({ channelId, depth }: {
         channelId: string;
         depth: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ channelId: string; depth: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelShorts({ channelId, depth }: {
         channelId: string;
         depth: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     id: string;
      *     alternativeMethod?: boolean;
      *     getSubscribersCount?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     videoDetails({ id, alternativeMethod, getSubscribersCount }: {
         id: string;
         alternativeMethod?: boolean;
         getSubscribersCount?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ channelId: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelSubscribers({ channelId }: {
         channelId: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ username: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelUsernameToId({ username }: {
         username: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ channelId: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelIdToUsername({ channelId }: {
         channelId: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ musicId: string; depth?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicIdToShorts({ musicId, depth }: {
         musicId: string;
         depth?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ id: string; cursor?: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     videoComments({ id, cursor }: {
         id: string;
         cursor?: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     #private;
 }
 declare class InstagramEndpoints {
@@ -427,7 +534,7 @@ declare class InstagramEndpoints {
      *     cursor?: string;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userPosts({ userId, depth, oldestTimestamp, chunkSize, cursor, alternativeMethod, }: {
@@ -437,39 +544,54 @@ declare class InstagramEndpoints {
         chunkSize?: number;
         cursor?: string;
         alternativeMethod?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ userId: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userBasicStats({ userId }: {
         userId: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ username: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfo({ username }: {
         username: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ username: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userDetailedInfo({ username }: {
         username: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ userId: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers({ userId }: {
         userId: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     userId: number;
@@ -479,7 +601,7 @@ declare class InstagramEndpoints {
      *     cursor?: string;
      *     chunkSize?: number;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userReels({ userId, depth, includeFeedVideo, oldestTimestamp, cursor, chunkSize, }: {
@@ -489,26 +611,35 @@ declare class InstagramEndpoints {
         oldestTimestamp?: number;
         cursor?: string;
         chunkSize?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ userId: number; cursor?: string; chunkSize?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userTaggedPosts({ userId, cursor, chunkSize }: {
         userId: number;
         cursor?: string;
         chunkSize?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ code: string; numComments?: number }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postInfoAndComments({ code, numComments }: {
         code: string;
         numComments?: number;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{
      *     hashtag: string;
@@ -517,7 +648,7 @@ declare class InstagramEndpoints {
      *     getAuthorInfo?: boolean;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagPosts({ hashtag, cursor, chunkSize, getAuthorInfo, alternativeMethod, }: {
@@ -526,24 +657,33 @@ declare class InstagramEndpoints {
         chunkSize?: number;
         getAuthorInfo?: boolean;
         alternativeMethod?: boolean;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ musicId: string; cursor?: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicPosts({ musicId, cursor }: {
         musicId: string;
         cursor?: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ text: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     search({ text }: {
         text: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     #private;
 }
 declare class TwitchEndpoints {
@@ -557,22 +697,28 @@ declare class TwitchEndpoints {
      *     depth: number;
      *     type: "videos" | "channels" | "games";
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     keywordSearch({ keyword, depth, type }: {
         keyword: string;
         depth: number;
         type: "videos" | "channels" | "games";
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ username: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers({ username }: {
         username: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     #private;
 }
 declare class RedditEndpoints {
@@ -587,7 +733,7 @@ declare class RedditEndpoints {
      *     period: "hour" | "day" | "week" | "month" | "year" | "all";
      *     cursor?: string;
      * }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     subredditPosts({ name, sort, period, cursor }: {
@@ -595,16 +741,22 @@ declare class RedditEndpoints {
         sort: "hot" | "new" | "top" | "rising";
         period: "hour" | "day" | "week" | "month" | "year" | "all";
         cursor?: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     /**
      * @param {{ id: string; cursor?: string }} params
-     * @param {Record<string, any>} extraParams
+     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postComments({ id, cursor }: {
         id: string;
         cursor?: string;
-    }, extraParams?: Record<string, any>): Promise<EDResponse>;
+    }, options?: {
+        extraParams?: Record<string, any>;
+        timeoutSecs?: number;
+    }): Promise<EDResponse>;
     #private;
 }
 import { Requester } from "./requester.js";
