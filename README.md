@@ -95,7 +95,7 @@ try {
         username: "daviddobrik",
     });
 } catch (error) {
-    switch (error.status_code) {
+    switch (error.statusCode) {
         // Rate limit exceeded...
         case errors.STATUS_429_RATE_LIMIT_EXCEEDED:
             console.log(error.detail);
