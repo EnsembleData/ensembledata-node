@@ -26,6 +26,6 @@
         "typescript": "^5.5.4"
     },
     "scripts": {
-        "postversion": "./scripts/sync_version.sh $npm_package_version"
+        "version": "./scripts/sync_version.sh $npm_package_version"
     }
 }

@@ -2,23 +2,23 @@ export class Requester {
     /**
      * @param {{
      *     token: string;
-     *     timeoutSecs: number;
+     *     timeout: number;
      *     maxNetworkRetries: number;
      * }} options
      */
-    constructor({ token, timeoutSecs, maxNetworkRetries }: {
+    constructor({ token, timeout, maxNetworkRetries }: {
         token: string;
-        timeoutSecs: number;
+        timeout: number;
         maxNetworkRetries: number;
     });
     /**
      * @param {string} path
      * @param {Record<string, any>} params
-     * @param {{ timeoutSecs?: number; returnTopLevelData?: boolean }} options
+     * @param {{ timeout?: number; returnTopLevelData?: boolean }} options
      * @returns {Promise<EDResponse>}
      */
     get(path: string, params: Record<string, any>, options?: {
-        timeoutSecs?: number;
+        timeout?: number;
         returnTopLevelData?: boolean;
     }): Promise<EDResponse>;
     /**

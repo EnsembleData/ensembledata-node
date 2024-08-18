@@ -25,7 +25,7 @@ class {{ tag }}Endpoints {
          {{ param.name }}{{ "?" if not param.required }}: {{ param.type | safe }};{{ " " }}
     {%- endfor %}
     {% raw %}}}{% endraw %} params 
-     * @param {% raw %}{{ extraParams?: Record<string, any>, timeoutSecs?: number }} options{% endraw %}
+     * @param {% raw %}{{ extraParams?: Record<string, any>, timeout?: number }} options{% endraw %}
      * @returns {Promise<EDResponse>}
      */
     {{ endpoint.functionName }}({
@@ -45,7 +45,7 @@ class {{ tag }}Endpoints {
         {% endif %}
         {% endfor %}
         });
-        return this.#requester.get("{{ endpoint.path }}", params, { timeoutSecs: options.timeoutSecs, {{ "returnTopLevelData: true" if endpoint.returnTopLevelData }} });
+        return this.#requester.get("{{ endpoint.path }}", params, { timeout: options.timeout, {{ "returnTopLevelData: true" if endpoint.returnTopLevelData }} });
     }
 
     {% endfor %}
@@ -60,9 +60,9 @@ export class EDClient {
      */
     #requester;
 
-    /** @param {% raw %}{{ token: string, timeoutSecs?: number, maxNetworkRetries?: number }}{% endraw %} options */
-    constructor({ token, timeoutSecs = 600, maxNetworkRetries = 3 }) {
-        const requester = new Requester({ token, timeoutSecs, maxNetworkRetries });
+    /** @param {% raw %}{{ token: string, timeout?: number, maxNetworkRetries?: number }}{% endraw %} options */
+    constructor({ token, timeout = 600, maxNetworkRetries = 3 }) {
+        const requester = new Requester({ token, timeout, maxNetworkRetries });
         this.#requester = requester;
 
         {% for tag, _ in tags %}
@@ -75,10 +75,11 @@ export class EDClient {
     /**
      * @param {string} path
      * @param {Record<string, string>} params
+     * @param {% raw %}{{ timeout?: number }} options{% endraw %}
      * @returns {Promise<EDResponse>}
      */
-    async request(path, params) {
-        return this.#requester.get(path, params);
+    async request(path, params, options = {}) {
+        return this.#requester.get(path, params, { timeout: options.timeout });
     }
 }
 

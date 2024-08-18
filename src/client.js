@@ -17,7 +17,7 @@ class CustomerEndpoints {
 
     /**
      * @param {{ date: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     getUsage({ date }, options = {}) {
@@ -26,13 +26,13 @@ class CustomerEndpoints {
             date,
         });
         return this.#requester.get("/customer/get-used-units", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ days: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     getUsageHistory({ days }, options = {}) {
@@ -41,7 +41,7 @@ class CustomerEndpoints {
             days,
         });
         return this.#requester.get("/customer/get-history", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 }
@@ -60,7 +60,7 @@ class TiktokEndpoints {
 
     /**
      * @param {{ hashtag: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagSearch({ hashtag, cursor = undefined }, options = {}) {
@@ -70,7 +70,7 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/hashtag/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -81,7 +81,7 @@ class TiktokEndpoints {
      *     remapOutput?: boolean;
      *     maxCursor?: number;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     fullHashtagSearch(
@@ -96,7 +96,7 @@ class TiktokEndpoints {
             max_cursor: maxCursor,
         });
         return this.#requester.get("/tt/hashtag/recent-posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -110,7 +110,7 @@ class TiktokEndpoints {
      *     matchExactly?: boolean;
      *     getAuthorStats?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     keywordSearch(
@@ -136,7 +136,7 @@ class TiktokEndpoints {
             get_author_stats: getAuthorStats,
         });
         return this.#requester.get("/tt/keyword/search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -148,7 +148,7 @@ class TiktokEndpoints {
      *     country?: string;
      *     matchExactly?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     fullKeywordSearch(
@@ -170,7 +170,7 @@ class TiktokEndpoints {
             match_exactly: matchExactly,
         });
         return this.#requester.get("/tt/keyword/full-search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -182,7 +182,7 @@ class TiktokEndpoints {
      *     oldestCreatetime?: number;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userPostsFromUsername(
@@ -204,7 +204,7 @@ class TiktokEndpoints {
             alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/user/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
             returnTopLevelData: true,
         });
     }
@@ -217,7 +217,7 @@ class TiktokEndpoints {
      *     oldestCreatetime?: number;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userPostsFromSecuid(
@@ -239,14 +239,14 @@ class TiktokEndpoints {
             alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/user/posts-from-secuid", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
             returnTopLevelData: true,
         });
     }
 
     /**
      * @param {{ username: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfoFromUsername({ username }, options = {}) {
@@ -255,13 +255,13 @@ class TiktokEndpoints {
             username,
         });
         return this.#requester.get("/tt/user/info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ secUid: string; alternativeMethod?: boolean }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfoFromSecuid(
@@ -274,13 +274,13 @@ class TiktokEndpoints {
             alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/user/info-from-secuid", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ keyword: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userSearch({ keyword, cursor = undefined }, options = {}) {
@@ -290,13 +290,13 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/user/search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ url: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postInfo({ url }, options = {}) {
@@ -305,13 +305,13 @@ class TiktokEndpoints {
             url,
         });
         return this.#requester.get("/tt/post/info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ awemeIds: string[] }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     multiPostInfo({ awemeIds }, options = {}) {
@@ -320,13 +320,13 @@ class TiktokEndpoints {
             ids: awemeIds.join(";"),
         });
         return this.#requester.get("/tt/post/multi-info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ awemeId: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postComments({ awemeId, cursor = undefined }, options = {}) {
@@ -336,13 +336,13 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/post/comments", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ awemeId: string; commentId: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postCommentReplies(
@@ -356,7 +356,7 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/post/comments-replies", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -367,7 +367,7 @@ class TiktokEndpoints {
      *     sorting?: "0" | "1" | "2" | "3" | "4";
      *     filterBy?: "0" | "1" | "2";
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicSearch(
@@ -387,13 +387,13 @@ class TiktokEndpoints {
             filter_by: filterBy,
         });
         return this.#requester.get("/tt/music/info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ musicId: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicPosts({ musicId, cursor = undefined }, options = {}) {
@@ -403,13 +403,13 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/music/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ musicId: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicDetails({ musicId }, options = {}) {
@@ -418,13 +418,13 @@ class TiktokEndpoints {
             id: musicId,
         });
         return this.#requester.get("/tt/music/details", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ id: string; secUid: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers({ id, secUid, cursor = undefined }, options = {}) {
@@ -435,7 +435,7 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/user/followers", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -446,7 +446,7 @@ class TiktokEndpoints {
      *     cursor?: number;
      *     pageToken?: string;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowings(
@@ -461,13 +461,13 @@ class TiktokEndpoints {
             page_token: pageToken,
         });
         return this.#requester.get("/tt/user/followings", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ secUid: string; cursor?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userLikedPosts({ secUid, cursor = undefined }, options = {}) {
@@ -477,7 +477,7 @@ class TiktokEndpoints {
             cursor,
         });
         return this.#requester.get("/tt/user/liked-posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 }
@@ -503,7 +503,7 @@ class YoutubeEndpoints {
      *     sorting?: "relevance" | "time" | "views" | "rating";
      *     getAdditionalInfo?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     keywordSearch(
@@ -527,13 +527,13 @@ class YoutubeEndpoints {
             get_additional_info: getAdditionalInfo,
         });
         return this.#requester.get("/youtube/search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ keyword: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     featuredCategoriesSearch({ keyword }, options = {}) {
@@ -544,13 +544,13 @@ class YoutubeEndpoints {
         return this.#requester.get(
             "/youtube/search/featured-categories",
             params,
-            { timeoutSecs: options.timeoutSecs },
+            { timeout: options.timeout },
         );
     }
 
     /**
      * @param {{ hashtag: string; depth: number; onlyShorts?: boolean }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagSearch({ hashtag, depth, onlyShorts = undefined }, options = {}) {
@@ -561,13 +561,13 @@ class YoutubeEndpoints {
             only_shorts: onlyShorts,
         });
         return this.#requester.get("/youtube/hashtag/search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ channelId: string; fromUrl?: boolean }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelDetailedInfo({ channelId, fromUrl = undefined }, options = {}) {
@@ -577,13 +577,13 @@ class YoutubeEndpoints {
             from_url: fromUrl,
         });
         return this.#requester.get("/youtube/channel/detailed-info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ channelId: string; depth: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelVideos({ channelId, depth }, options = {}) {
@@ -593,13 +593,13 @@ class YoutubeEndpoints {
             depth,
         });
         return this.#requester.get("/youtube/channel/videos", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ channelId: string; depth: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelShorts({ channelId, depth }, options = {}) {
@@ -609,7 +609,7 @@ class YoutubeEndpoints {
             depth,
         });
         return this.#requester.get("/youtube/channel/shorts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -619,7 +619,7 @@ class YoutubeEndpoints {
      *     alternativeMethod?: boolean;
      *     getSubscribersCount?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     videoDetails(
@@ -633,13 +633,13 @@ class YoutubeEndpoints {
             get_subscribers_count: getSubscribersCount,
         });
         return this.#requester.get("/youtube/channel/get-short-stats", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ channelId: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelSubscribers({ channelId }, options = {}) {
@@ -648,13 +648,13 @@ class YoutubeEndpoints {
             browseId: channelId,
         });
         return this.#requester.get("/youtube/channel/followers", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ username: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelUsernameToId({ username }, options = {}) {
@@ -663,13 +663,13 @@ class YoutubeEndpoints {
             name: username,
         });
         return this.#requester.get("/youtube/channel/name-to-id", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ channelId: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     channelIdToUsername({ channelId }, options = {}) {
@@ -678,13 +678,13 @@ class YoutubeEndpoints {
             browseId: channelId,
         });
         return this.#requester.get("/youtube/channel/id-to-name", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ musicId: string; depth?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicIdToShorts({ musicId, depth = undefined }, options = {}) {
@@ -694,13 +694,13 @@ class YoutubeEndpoints {
             depth,
         });
         return this.#requester.get("/youtube/music/id-to-shorts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ id: string; cursor?: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     videoComments({ id, cursor = undefined }, options = {}) {
@@ -710,7 +710,7 @@ class YoutubeEndpoints {
             cursor,
         });
         return this.#requester.get("/youtube/video/comments", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 }
@@ -736,7 +736,7 @@ class InstagramEndpoints {
      *     cursor?: string;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userPosts(
@@ -760,13 +760,13 @@ class InstagramEndpoints {
             alternative_method: alternativeMethod,
         });
         return this.#requester.get("/instagram/user/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ userId: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userBasicStats({ userId }, options = {}) {
@@ -775,13 +775,13 @@ class InstagramEndpoints {
             user_id: userId,
         });
         return this.#requester.get("/instagram/user/basic-info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ username: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfo({ username }, options = {}) {
@@ -790,13 +790,13 @@ class InstagramEndpoints {
             username,
         });
         return this.#requester.get("/instagram/user/info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ username: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userDetailedInfo({ username }, options = {}) {
@@ -805,13 +805,13 @@ class InstagramEndpoints {
             username,
         });
         return this.#requester.get("/instagram/user/detailed-info", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ userId: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers({ userId }, options = {}) {
@@ -820,7 +820,7 @@ class InstagramEndpoints {
             user_id: userId,
         });
         return this.#requester.get("/instagram/user/followers", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -833,7 +833,7 @@ class InstagramEndpoints {
      *     cursor?: string;
      *     chunkSize?: number;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userReels(
@@ -857,13 +857,13 @@ class InstagramEndpoints {
             chunk_size: chunkSize,
         });
         return this.#requester.get("/instagram/user/reels", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ userId: number; cursor?: string; chunkSize?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userTaggedPosts(
@@ -877,13 +877,13 @@ class InstagramEndpoints {
             chunk_size: chunkSize,
         });
         return this.#requester.get("/instagram/user/tagged-posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ code: string; numComments?: number }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postInfoAndComments({ code, numComments = undefined }, options = {}) {
@@ -893,7 +893,7 @@ class InstagramEndpoints {
             n_comments_to_fetch: numComments,
         });
         return this.#requester.get("/instagram/post/details", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
@@ -905,7 +905,7 @@ class InstagramEndpoints {
      *     getAuthorInfo?: boolean;
      *     alternativeMethod?: boolean;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagPosts(
@@ -927,13 +927,13 @@ class InstagramEndpoints {
             alternative_method: alternativeMethod,
         });
         return this.#requester.get("/instagram/hashtag/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ musicId: string; cursor?: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     musicPosts({ musicId, cursor = undefined }, options = {}) {
@@ -943,13 +943,13 @@ class InstagramEndpoints {
             cursor,
         });
         return this.#requester.get("/instagram/music/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ text: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     search({ text }, options = {}) {
@@ -958,7 +958,7 @@ class InstagramEndpoints {
             text,
         });
         return this.#requester.get("/instagram/search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 }
@@ -981,7 +981,7 @@ class TwitchEndpoints {
      *     depth: number;
      *     type: "videos" | "channels" | "games";
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     keywordSearch({ keyword, depth, type }, options = {}) {
@@ -992,13 +992,13 @@ class TwitchEndpoints {
             type,
         });
         return this.#requester.get("/twitch/search", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ username: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers({ username }, options = {}) {
@@ -1007,7 +1007,7 @@ class TwitchEndpoints {
             username,
         });
         return this.#requester.get("/twitch/user/followers", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 }
@@ -1031,7 +1031,7 @@ class RedditEndpoints {
      *     period: "hour" | "day" | "week" | "month" | "year" | "all";
      *     cursor?: string;
      * }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     subredditPosts({ name, sort, period, cursor = undefined }, options = {}) {
@@ -1043,13 +1043,13 @@ class RedditEndpoints {
             cursor,
         });
         return this.#requester.get("/reddit/subreddit/posts", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 
     /**
      * @param {{ id: string; cursor?: string }} params
-     * @param {{ extraParams?: Record<string, any>; timeoutSecs?: number }} options
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postComments({ id, cursor = undefined }, options = {}) {
@@ -1059,7 +1059,7 @@ class RedditEndpoints {
             cursor,
         });
         return this.#requester.get("/reddit/post/comments", params, {
-            timeoutSecs: options.timeoutSecs,
+            timeout: options.timeout,
         });
     }
 }
@@ -1074,16 +1074,12 @@ export class EDClient {
     /**
      * @param {{
      *     token: string;
-     *     timeoutSecs?: number;
+     *     timeout?: number;
      *     maxNetworkRetries?: number;
      * }} options
      */
-    constructor({ token, timeoutSecs = 600, maxNetworkRetries = 3 }) {
-        const requester = new Requester({
-            token,
-            timeoutSecs,
-            maxNetworkRetries,
-        });
+    constructor({ token, timeout = 600, maxNetworkRetries = 3 }) {
+        const requester = new Requester({ token, timeout, maxNetworkRetries });
         this.#requester = requester;
 
         /** @readonly */
@@ -1108,9 +1104,10 @@ export class EDClient {
     /**
      * @param {string} path
      * @param {Record<string, string>} params
+     * @param {{ timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    async request(path, params) {
-        return this.#requester.get(path, params);
+    async request(path, params, options = {}) {
+        return this.#requester.get(path, params, { timeout: options.timeout });
     }
 }

@@ -13,7 +13,7 @@ export class Requester {
      * @type {number}
      * @readonly
      */
-    #timeoutSecs;
+    #timeout;
 
     /**
      * @type {number}
@@ -24,29 +24,28 @@ export class Requester {
     /**
      * @param {{
      *     token: string;
-     *     timeoutSecs: number;
+     *     timeout: number;
      *     maxNetworkRetries: number;
      * }} options
      */
-    constructor({ token, timeoutSecs, maxNetworkRetries }) {
+    constructor({ token, timeout, maxNetworkRetries }) {
         this.#token = token;
-        this.#timeoutSecs = timeoutSecs;
+        this.#timeout = timeout;
         this.#maxNetworkRetries = maxNetworkRetries;
     }
 
     /**
      * @param {string} path
      * @param {Record<string, any>} params
-     * @param {{ timeoutSecs?: number; returnTopLevelData?: boolean }} options
+     * @param {{ timeout?: number; returnTopLevelData?: boolean }} options
      * @returns {Promise<EDResponse>}
      */
     async get(path, params, options = {}) {
         params = { ...params, token: this.#token };
         const queryParams = new URLSearchParams(params).toString();
         const timeoutMS =
-            (options.timeoutSecs === undefined
-                ? this.#timeoutSecs
-                : options.timeoutSecs) * 1_000;
+            (options.timeout === undefined ? this.#timeout : options.timeout) *
+            1_000;
         const returnTopLevelData = options.returnTopLevelData || false;
 
         for (let i = 0; i < this.#maxNetworkRetries; i++) {

@@ -149,15 +149,15 @@ const client = EDClient({ token: "API-TOKEN", maxNetworkRetries: 5 });
 
 ### Configure Timeout
 
-If you would like control over the read timeout, you can configure this either for all request by setting `timeoutSecs` when creating the `EDClient`, or you can specify the `timeoutSecs` per request, on any of the individual methods as shown below:
+If you would like control over the timeout, you can configure this either for all request by setting `timeout` (in seconds) when creating the `EDClient`, or you can specify the `timeout` per request, on any of the individual methods as shown below:
 
 ```javascript
 import { EDClient } from "ensembledata";
 
-const client = EDClient({ token: "API-TOKEN", timeoutSecs: 120 });
+const client = EDClient({ token: "API-TOKEN", timeout: 120 });
 const result = await client.instagram.userInfo(
     { username: "..." },
-    { timeoutSecs: 10 },
+    { timeout: 10 },
 );
 ```
 
