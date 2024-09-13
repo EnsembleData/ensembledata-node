@@ -1064,6 +1064,81 @@ class RedditEndpoints {
     }
 }
 
+class ThreadsEndpoints {
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {{ requester: Requester }} options */
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+    /**
+     * @param {{ name: string; sorting?: "0" | "1" }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    searchKeyword({ name, sorting = undefined }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            name,
+            sorting,
+        });
+        return this.#requester.get("/threads/keyword/search", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
+     * @param {{ name: string }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    userSearch({ name }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            name,
+        });
+        return this.#requester.get("/threads/user/search", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
+     * @param {{ id: number }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    userInfo({ id }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            id,
+        });
+        return this.#requester.get("/threads/user/info", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
+     * @param {{ id: number; chunkSize?: number }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    userPosts({ id, chunkSize = undefined }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            id,
+            chunk_size: chunkSize,
+        });
+        return this.#requester.get("/threads/user/posts", params, {
+            timeout: options.timeout,
+        });
+    }
+}
+
 export class EDClient {
     /**
      * @type {Requester}
@@ -1099,6 +1174,9 @@ export class EDClient {
 
         /** @readonly */
         this.reddit = new RedditEndpoints({ requester });
+
+        /** @readonly */
+        this.threads = new ThreadsEndpoints({ requester });
     }
 
     /**
