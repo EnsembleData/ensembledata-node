@@ -1064,6 +1064,64 @@ class RedditEndpoints {
     }
 }
 
+class TwitterEndpoints {
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {{ requester: Requester }} options */
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+    /**
+     * @param {{ name: string }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    userInfo({ name }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            name,
+        });
+        return this.#requester.get("/twitter/user/info", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
+     * @param {{ id: number }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    userTweets({ id }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            id,
+        });
+        return this.#requester.get("/twitter/user/tweets", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
+     * @param {{ id: number }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    postInfo({ id }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            id,
+        });
+        return this.#requester.get("/twitter/post/info", params, {
+            timeout: options.timeout,
+        });
+    }
+}
+
 class ThreadsEndpoints {
     /**
      * @type {Requester}
@@ -1137,6 +1195,49 @@ class ThreadsEndpoints {
             timeout: options.timeout,
         });
     }
+
+    /**
+     * @param {{ id: number }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    postReplies({ id }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            id,
+        });
+        return this.#requester.get("/threads/post/replies", params, {
+            timeout: options.timeout,
+        });
+    }
+}
+
+class SnapchatEndpoints {
+    /**
+     * @type {Requester}
+     * @readonly
+     */
+    #requester;
+
+    /** @param {{ requester: Requester }} options */
+    constructor({ requester }) {
+        this.#requester = requester;
+    }
+
+    /**
+     * @param {{ name: string }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    userInfo({ name }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            name,
+        });
+        return this.#requester.get("/snapchat/user/info", params, {
+            timeout: options.timeout,
+        });
+    }
 }
 
 export class EDClient {
@@ -1176,7 +1277,13 @@ export class EDClient {
         this.reddit = new RedditEndpoints({ requester });
 
         /** @readonly */
+        this.twitter = new TwitterEndpoints({ requester });
+
+        /** @readonly */
         this.threads = new ThreadsEndpoints({ requester });
+
+        /** @readonly */
+        this.snapchat = new SnapchatEndpoints({ requester });
     }
 
     /**
