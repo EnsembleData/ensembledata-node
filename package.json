@@ -1,10 +1,10 @@
 {
     "name": "ensembledata",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Node.js bindings for the EnsembleData API",
     "author": "EnsembleData <hello@ensembledata.com>",
     "contributors": [
-        "Fayd Speare <fayd@ensembledata.com>"
+        "EnsembleData <hello@ensembledata.com>"
     ],
     "homepage": "https://ensembledata.com",
     "repository": {
