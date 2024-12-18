@@ -614,6 +614,22 @@ class YoutubeEndpoints {
     }
 
     /**
+     * @param {{ channelId: string; depth: number }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    channelStreams({ channelId, depth }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            browseId: channelId,
+            depth,
+        });
+        return this.#requester.get("/youtube/channel/streams", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
      * @param {{
      *     id: string;
      *     alternativeMethod?: boolean;
@@ -901,30 +917,20 @@ class InstagramEndpoints {
      * @param {{
      *     hashtag: string;
      *     cursor?: string;
-     *     chunkSize?: number;
      *     getAuthorInfo?: boolean;
-     *     alternativeMethod?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     hashtagPosts(
-        {
-            hashtag,
-            cursor = undefined,
-            chunkSize = undefined,
-            getAuthorInfo = undefined,
-            alternativeMethod = undefined,
-        },
+        { hashtag, cursor = undefined, getAuthorInfo = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             name: hashtag,
             cursor,
-            chunk_size: chunkSize,
             get_author_info: getAuthorInfo,
-            alternative_method: alternativeMethod,
         });
         return this.#requester.get("/instagram/hashtag/posts", params, {
             timeout: options.timeout,
