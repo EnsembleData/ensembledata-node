@@ -480,6 +480,26 @@ class TiktokEndpoints {
             timeout: options.timeout,
         });
     }
+
+    /**
+     * @param {{ keyword: string; cursor?: number; country?: string }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    livesSearch(
+        { keyword, cursor = undefined, country = undefined },
+        options = {},
+    ) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            keyword,
+            cursor,
+            country,
+        });
+        return this.#requester.get("/tt/live/search", params, {
+            timeout: options.timeout,
+        });
+    }
 }
 
 class YoutubeEndpoints {
@@ -566,15 +586,23 @@ class YoutubeEndpoints {
     }
 
     /**
-     * @param {{ channelId: string; fromUrl?: boolean }} params
+     * @param {{
+     *     channelId: string;
+     *     fromUrl?: boolean;
+     *     getAdditionalInfo?: boolean;
+     * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    channelDetailedInfo({ channelId, fromUrl = undefined }, options = {}) {
+    channelDetailedInfo(
+        { channelId, fromUrl = undefined, getAdditionalInfo = undefined },
+        options = {},
+    ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             browseId: channelId,
             from_url: fromUrl,
+            get_additional_info: getAdditionalInfo,
         });
         return this.#requester.get("/youtube/channel/detailed-info", params, {
             timeout: options.timeout,
@@ -1054,15 +1082,14 @@ class RedditEndpoints {
     }
 
     /**
-     * @param {{ id: string; cursor?: string }} params
+     * @param {{ permalink: string }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    postComments({ id, cursor = undefined }, options = {}) {
+    postComments({ permalink }, options = {}) {
         const params = filterUndefinedValues({
             ...options.extraParams,
-            id,
-            cursor,
+            permalink,
         });
         return this.#requester.get("/reddit/post/comments", params, {
             timeout: options.timeout,
