@@ -942,30 +942,6 @@ class InstagramEndpoints {
     }
 
     /**
-     * @param {{
-     *     hashtag: string;
-     *     cursor?: string;
-     *     getAuthorInfo?: boolean;
-     * }} params
-     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
-     * @returns {Promise<EDResponse>}
-     */
-    hashtagPosts(
-        { hashtag, cursor = undefined, getAuthorInfo = undefined },
-        options = {},
-    ) {
-        const params = filterUndefinedValues({
-            ...options.extraParams,
-            name: hashtag,
-            cursor,
-            get_author_info: getAuthorInfo,
-        });
-        return this.#requester.get("/instagram/hashtag/posts", params, {
-            timeout: options.timeout,
-        });
-    }
-
-    /**
      * @param {{ musicId: string; cursor?: string }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
