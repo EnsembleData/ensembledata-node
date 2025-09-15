@@ -37,7 +37,7 @@ class {{ tag }}Endpoints {
             ...options.extraParams,
         {% for param in endpoint.params %}
         {% if param.transform == "join_with_semicolon" %}
-            {{ param.param }}: {{ param.name }}.join(";")
+            {{ param.param }}: {{ param.name }}.join(";"),
         {% elif param.name == param.param %}
             {{ param.param }},
         {% else %}

@@ -181,6 +181,8 @@ class TiktokEndpoints {
      *     cursor?: number;
      *     oldestCreatetime?: number;
      *     alternativeMethod?: boolean;
+     *     newVersion?: boolean;
+     *     downloadVideo?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
@@ -192,6 +194,8 @@ class TiktokEndpoints {
             cursor = undefined,
             oldestCreatetime = undefined,
             alternativeMethod = undefined,
+            newVersion = undefined,
+            downloadVideo = undefined,
         },
         options = {},
     ) {
@@ -202,6 +206,8 @@ class TiktokEndpoints {
             start_cursor: cursor,
             oldest_createtime: oldestCreatetime,
             alternative_method: alternativeMethod,
+            new_version: newVersion,
+            download_video: downloadVideo,
         });
         return this.#requester.get("/tt/user/posts", params, {
             timeout: options.timeout,
@@ -216,6 +222,8 @@ class TiktokEndpoints {
      *     cursor?: number;
      *     oldestCreatetime?: number;
      *     alternativeMethod?: boolean;
+     *     newVersion?: boolean;
+     *     downloadVideo?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
@@ -227,6 +235,8 @@ class TiktokEndpoints {
             cursor = undefined,
             oldestCreatetime = undefined,
             alternativeMethod = undefined,
+            newVersion = undefined,
+            downloadVideo = undefined,
         },
         options = {},
     ) {
@@ -237,6 +247,8 @@ class TiktokEndpoints {
             start_cursor: cursor,
             oldest_createtime: oldestCreatetime,
             alternative_method: alternativeMethod,
+            new_version: newVersion,
+            download_video: downloadVideo,
         });
         return this.#requester.get("/tt/user/posts-from-secuid", params, {
             timeout: options.timeout,
@@ -260,18 +272,23 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ secUid: string; alternativeMethod?: boolean }} params
+     * @param {{
+     *     secUid: string;
+     *     alternativeMethod?: boolean;
+     *     newVersion?: boolean;
+     * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfoFromSecuid(
-        { secUid, alternativeMethod = undefined },
+        { secUid, alternativeMethod = undefined, newVersion = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             secUid,
             alternative_method: alternativeMethod,
+            new_version: newVersion,
         });
         return this.#requester.get("/tt/user/info-from-secuid", params, {
             timeout: options.timeout,
@@ -295,14 +312,23 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ url: string }} params
+     * @param {{
+     *     url: string;
+     *     newVersion?: boolean;
+     *     downloadVideo?: boolean;
+     * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    postInfo({ url }, options = {}) {
+    postInfo(
+        { url, newVersion = undefined, downloadVideo = undefined },
+        options = {},
+    ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             url,
+            new_version: newVersion,
+            download_video: downloadVideo,
         });
         return this.#requester.get("/tt/post/info", params, {
             timeout: options.timeout,
@@ -310,14 +336,23 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ awemeIds: string[] }} params
+     * @param {{
+     *     awemeIds: string[];
+     *     newVersion?: boolean;
+     *     downloadVideo?: boolean;
+     * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    multiPostInfo({ awemeIds }, options = {}) {
+    multiPostInfo(
+        { awemeIds, newVersion = undefined, downloadVideo = undefined },
+        options = {},
+    ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             ids: awemeIds.join(";"),
+            new_version: newVersion,
+            download_video: downloadVideo,
         });
         return this.#requester.get("/tt/post/multi-info", params, {
             timeout: options.timeout,
@@ -325,15 +360,19 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ awemeId: string; cursor?: number }} params
+     * @param {{ awemeId: string; cursor?: number; newVersion?: boolean }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    postComments({ awemeId, cursor = undefined }, options = {}) {
+    postComments(
+        { awemeId, cursor = undefined, newVersion = undefined },
+        options = {},
+    ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             aweme_id: awemeId,
             cursor,
+            new_version: newVersion,
         });
         return this.#requester.get("/tt/post/comments", params, {
             timeout: options.timeout,
@@ -408,14 +447,15 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ musicId: string }} params
+     * @param {{ musicId: string; newVersion?: boolean }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    musicDetails({ musicId }, options = {}) {
+    musicDetails({ musicId, newVersion = undefined }, options = {}) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             id: musicId,
+            new_version: newVersion,
         });
         return this.#requester.get("/tt/music/details", params, {
             timeout: options.timeout,
@@ -423,16 +463,25 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ id: string; secUid: string; cursor?: number }} params
+     * @param {{
+     *     id: string;
+     *     secUid: string;
+     *     cursor?: number;
+     *     newVersion?: boolean;
+     * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    userFollowers({ id, secUid, cursor = undefined }, options = {}) {
+    userFollowers(
+        { id, secUid, cursor = undefined, newVersion = undefined },
+        options = {},
+    ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             id,
             secUid,
             cursor,
+            new_version: newVersion,
         });
         return this.#requester.get("/tt/user/followers", params, {
             timeout: options.timeout,
@@ -445,12 +494,19 @@ class TiktokEndpoints {
      *     secUid: string;
      *     cursor?: number;
      *     pageToken?: string;
+     *     newVersion?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowings(
-        { id, secUid, cursor = undefined, pageToken = undefined },
+        {
+            id,
+            secUid,
+            cursor = undefined,
+            pageToken = undefined,
+            newVersion = undefined,
+        },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -459,6 +515,7 @@ class TiktokEndpoints {
             secUid,
             cursor,
             page_token: pageToken,
+            new_version: newVersion,
         });
         return this.#requester.get("/tt/user/followings", params, {
             timeout: options.timeout,
@@ -937,6 +994,27 @@ class InstagramEndpoints {
             n_comments_to_fetch: numComments,
         });
         return this.#requester.get("/instagram/post/details", params, {
+            timeout: options.timeout,
+        });
+    }
+
+    /**
+     * @param {{
+     *     mediaId: number;
+     *     cursor: string;
+     *     sorting: "popular" | "recent";
+     * }} params
+     * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
+     * @returns {Promise<EDResponse>}
+     */
+    postComments({ mediaId, cursor, sorting }, options = {}) {
+        const params = filterUndefinedValues({
+            ...options.extraParams,
+            media_id: mediaId,
+            cursor,
+            sorting,
+        });
+        return this.#requester.get("/instagram/post/comments", params, {
             timeout: options.timeout,
         });
     }
