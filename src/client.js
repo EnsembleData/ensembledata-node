@@ -316,12 +316,18 @@ class TiktokEndpoints {
      *     url: string;
      *     newVersion?: boolean;
      *     downloadVideo?: boolean;
+     *     alternativeMethod?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postInfo(
-        { url, newVersion = undefined, downloadVideo = undefined },
+        {
+            url,
+            newVersion = undefined,
+            downloadVideo = undefined,
+            alternativeMethod = undefined,
+        },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -329,6 +335,7 @@ class TiktokEndpoints {
             url,
             new_version: newVersion,
             download_video: downloadVideo,
+            alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/post/info", params, {
             timeout: options.timeout,
@@ -340,12 +347,18 @@ class TiktokEndpoints {
      *     awemeIds: string[];
      *     newVersion?: boolean;
      *     downloadVideo?: boolean;
+     *     alternativeMethod?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     multiPostInfo(
-        { awemeIds, newVersion = undefined, downloadVideo = undefined },
+        {
+            awemeIds,
+            newVersion = undefined,
+            downloadVideo = undefined,
+            alternativeMethod = undefined,
+        },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -353,6 +366,7 @@ class TiktokEndpoints {
             ids: awemeIds.join(";"),
             new_version: newVersion,
             download_video: downloadVideo,
+            alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/post/multi-info", params, {
             timeout: options.timeout,
