@@ -316,18 +316,12 @@ class TiktokEndpoints {
      *     url: string;
      *     newVersion?: boolean;
      *     downloadVideo?: boolean;
-     *     alternativeMethod?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     postInfo(
-        {
-            url,
-            newVersion = undefined,
-            downloadVideo = undefined,
-            alternativeMethod = undefined,
-        },
+        { url, newVersion = undefined, downloadVideo = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -335,7 +329,6 @@ class TiktokEndpoints {
             url,
             new_version: newVersion,
             download_video: downloadVideo,
-            alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/post/info", params, {
             timeout: options.timeout,
@@ -347,18 +340,12 @@ class TiktokEndpoints {
      *     awemeIds: string[];
      *     newVersion?: boolean;
      *     downloadVideo?: boolean;
-     *     alternativeMethod?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     multiPostInfo(
-        {
-            awemeIds,
-            newVersion = undefined,
-            downloadVideo = undefined,
-            alternativeMethod = undefined,
-        },
+        { awemeIds, newVersion = undefined, downloadVideo = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -366,7 +353,6 @@ class TiktokEndpoints {
             ids: awemeIds.join(";"),
             new_version: newVersion,
             download_video: downloadVideo,
-            alternative_method: alternativeMethod,
         });
         return this.#requester.get("/tt/post/multi-info", params, {
             timeout: options.timeout,
@@ -481,13 +467,20 @@ class TiktokEndpoints {
      *     id: string;
      *     secUid: string;
      *     cursor?: number;
+     *     pageToken?: string;
      *     newVersion?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers(
-        { id, secUid, cursor = undefined, newVersion = undefined },
+        {
+            id,
+            secUid,
+            cursor = undefined,
+            pageToken = undefined,
+            newVersion = undefined,
+        },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -495,6 +488,7 @@ class TiktokEndpoints {
             id,
             secUid,
             cursor,
+            page_token: pageToken,
             new_version: newVersion,
         });
         return this.#requester.get("/tt/user/followers", params, {
