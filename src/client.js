@@ -180,7 +180,6 @@ class TiktokEndpoints {
      *     depth: number;
      *     cursor?: number;
      *     oldestCreatetime?: number;
-     *     alternativeMethod?: boolean;
      *     newVersion?: boolean;
      *     downloadVideo?: boolean;
      * }} params
@@ -193,7 +192,6 @@ class TiktokEndpoints {
             depth,
             cursor = undefined,
             oldestCreatetime = undefined,
-            alternativeMethod = undefined,
             newVersion = undefined,
             downloadVideo = undefined,
         },
@@ -205,7 +203,6 @@ class TiktokEndpoints {
             depth,
             start_cursor: cursor,
             oldest_createtime: oldestCreatetime,
-            alternative_method: alternativeMethod,
             new_version: newVersion,
             download_video: downloadVideo,
         });
@@ -221,7 +218,6 @@ class TiktokEndpoints {
      *     depth: number;
      *     cursor?: number;
      *     oldestCreatetime?: number;
-     *     alternativeMethod?: boolean;
      *     newVersion?: boolean;
      *     downloadVideo?: boolean;
      * }} params
@@ -234,7 +230,6 @@ class TiktokEndpoints {
             depth,
             cursor = undefined,
             oldestCreatetime = undefined,
-            alternativeMethod = undefined,
             newVersion = undefined,
             downloadVideo = undefined,
         },
@@ -246,7 +241,6 @@ class TiktokEndpoints {
             depth,
             start_cursor: cursor,
             oldest_createtime: oldestCreatetime,
-            alternative_method: alternativeMethod,
             new_version: newVersion,
             download_video: downloadVideo,
         });
