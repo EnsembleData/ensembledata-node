@@ -266,23 +266,18 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{
-     *     secUid: string;
-     *     alternativeMethod?: boolean;
-     *     newVersion?: boolean;
-     * }} params
+     * @param {{ secUid: string; alternativeMethod?: boolean }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userInfoFromSecuid(
-        { secUid, alternativeMethod = undefined, newVersion = undefined },
+        { secUid, alternativeMethod = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             secUid,
             alternative_method: alternativeMethod,
-            new_version: newVersion,
         });
         return this.#requester.get("/tt/user/info-from-secuid", params, {
             timeout: options.timeout,
@@ -354,19 +349,15 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ awemeId: string; cursor?: number; newVersion?: boolean }} params
+     * @param {{ awemeId: string; cursor?: number }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    postComments(
-        { awemeId, cursor = undefined, newVersion = undefined },
-        options = {},
-    ) {
+    postComments({ awemeId, cursor = undefined }, options = {}) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             aweme_id: awemeId,
             cursor,
-            new_version: newVersion,
         });
         return this.#requester.get("/tt/post/comments", params, {
             timeout: options.timeout,
@@ -441,15 +432,14 @@ class TiktokEndpoints {
     }
 
     /**
-     * @param {{ musicId: string; newVersion?: boolean }} params
+     * @param {{ musicId: string }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
-    musicDetails({ musicId, newVersion = undefined }, options = {}) {
+    musicDetails({ musicId }, options = {}) {
         const params = filterUndefinedValues({
             ...options.extraParams,
             id: musicId,
-            new_version: newVersion,
         });
         return this.#requester.get("/tt/music/details", params, {
             timeout: options.timeout,
@@ -462,19 +452,12 @@ class TiktokEndpoints {
      *     secUid: string;
      *     cursor?: number;
      *     pageToken?: string;
-     *     newVersion?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowers(
-        {
-            id,
-            secUid,
-            cursor = undefined,
-            pageToken = undefined,
-            newVersion = undefined,
-        },
+        { id, secUid, cursor = undefined, pageToken = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -483,7 +466,6 @@ class TiktokEndpoints {
             secUid,
             cursor,
             page_token: pageToken,
-            new_version: newVersion,
         });
         return this.#requester.get("/tt/user/followers", params, {
             timeout: options.timeout,
@@ -496,19 +478,12 @@ class TiktokEndpoints {
      *     secUid: string;
      *     cursor?: number;
      *     pageToken?: string;
-     *     newVersion?: boolean;
      * }} params
      * @param {{ extraParams?: Record<string, any>; timeout?: number }} options
      * @returns {Promise<EDResponse>}
      */
     userFollowings(
-        {
-            id,
-            secUid,
-            cursor = undefined,
-            pageToken = undefined,
-            newVersion = undefined,
-        },
+        { id, secUid, cursor = undefined, pageToken = undefined },
         options = {},
     ) {
         const params = filterUndefinedValues({
@@ -517,7 +492,6 @@ class TiktokEndpoints {
             secUid,
             cursor,
             page_token: pageToken,
-            new_version: newVersion,
         });
         return this.#requester.get("/tt/user/followings", params, {
             timeout: options.timeout,
